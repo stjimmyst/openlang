@@ -3,18 +3,17 @@ kind: Ingress
 metadata:
   name: my-ingress
   annotations:
-    kubernetes.io/ingress.class: gce
     kubernetes.io/ingress.global-static-ip-name: "my-app-ip"
-    ingress.gcp.kubernetes.io/pre-shared-secret: "my-app-ingress-cert"
+    networking.gke.io/managed-certificates: "mysert"
 spec:
   rules:
-  - host: www.openlang.one
+  - host: openlang.one
     http:
       paths:
       - path: /*
         pathType: ImplementationSpecific
         backend:
           service:
-            name: openlang-server-service
+            name: openlang-service
             port:
               number: 5000

@@ -1,27 +1,45 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
 metadata:
-  name: my-app
+  name: "openlang-deployment"
+  namespace: "default"
   labels:
-    app: openlang-server
+    app: "openlang-server"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-app
-  strategy:
-    type: Recreate
+      app: "openlang-server"
   template:
     metadata:
       labels:
-        app: my-app
+        app: "openlang-server"
     spec:
       containers:
-	  - name: my-app-container
-        image: us-central1-docker.pkg.dev/endless-matter-387302/openlang/server:latest
+      - name: "server-instance"
+        image: "us-central1-docker.pkg.dev/endless-matter-387302/openlang/server:latest"
         ports:
-            - containerPort: 5000
-              name: my-app
-		env:
-		- name: PORT
-		  value: 5000
+          - containerPort: 5000
+---
+apiVersion: "autoscaling/v2"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "openlang-server-hpa"
+  namespace: "default"
+  labels:
+    app: "openlang-server"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "openlang-server"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      target:
+        type: "Utilization"
+        averageUtilization: 80

@@ -1,2 +1,0 @@
-# openlang
-OpenLang main repo
