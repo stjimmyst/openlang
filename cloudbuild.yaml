@@ -1,18 +1,4 @@
 steps:
-  - id: BuildServer
+  - id: Builder
     name: gcr.io/cloud-builders/docker
-    args:
-      - '-c'
-      - >-
-        docker build -f Dockerfile -t us-central1-docker.pkg.dev/openlang-server .
-    entrypoint: bash
-  - id: Push
-    waitFor:
-      - BuildServer
-    name: gcr.io/cloud-builders/docker
-    args:
-      - push
-      - 'us-central1-docker.pkg.dev/openlang-server'
-timeout: 3600s
-images:
-  - 'us-central1-docker.pkg.dev/openlang-server'
+    args: [ 'build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_IMAGE}', '.' ]
