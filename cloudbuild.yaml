@@ -15,4 +15,4 @@ steps:
       - 'openlang-server'
 timeout: 3600s
 images:
-  - 'gcr.io/$PROJECT_ID/openlang/openlang-server'
+  - 'openlang-server'
