@@ -1,0 +1,18 @@
+steps:
+  - id: BuildServer
+    name: gcr.io/cloud-builders/docker
+    args:
+      - '-c'
+      - >-
+        docker build -f Dockerfile -t openlang-server .
+    entrypoint: bash
+  - id: Push
+    waitFor:
+      - BuildServer
+    name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - 'openlang-server'
+timeout: 3600s
+images:
+  - 'gcr.io/$PROJECT_ID/openlang/openlang-server'
