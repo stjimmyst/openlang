@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: my-app
+  labels:
+    app: openlang-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+	  - name: my-app-container
+        image: us-central1-docker.pkg.dev/endless-matter-387302/openlang/server:latest
+        ports:
+            - containerPort: 5000
+              name: my-app
+		env:
+		- name: PORT
+		  value: 5000
