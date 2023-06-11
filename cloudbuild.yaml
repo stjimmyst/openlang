@@ -4,7 +4,7 @@ steps:
     args:
       - '-c'
       - >-
-        docker build -f Dockerfile -t openlang-server .
+        docker build -f Dockerfile -t us-central1-docker.pkg.dev/openlang-server .
     entrypoint: bash
   - id: Push
     waitFor:
@@ -12,7 +12,7 @@ steps:
     name: gcr.io/cloud-builders/docker
     args:
       - push
-      - 'openlang-server'
+      - 'us-central1-docker.pkg.dev/openlang-server'
 timeout: 3600s
 images:
-  - 'openlang-server'
+  - 'us-central1-docker.pkg.dev/openlang-server'
