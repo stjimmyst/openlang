@@ -4,18 +4,28 @@ import mysql.connector
 
 app = Flask(__name__)
 
-mydb = mysql.connector.connect(
-  host="35.184.19.133",
-  user="root",
-  password="Flamingt0rch",
-  database="data"
-)
+# mydb = mysql.connector.connect(
+#   host="35.184.19.133",
+#   user="root",
+#   password="Flamingt0rch",
+#   database="data"
+# )
 
 def getRandomTopic():
-    mycursor = mydb.cursor(dictionary=True)
-    mycursor.execute("SELECT topic FROM Topics ORDER BY RAND() LIMIT 1")
-    myresult = mycursor.fetchone()
-    return myresult["topic"]
+    # mycursor = mydb.cursor(dictionary=True)
+    # mycursor.execute("SELECT topic FROM Topics ORDER BY RAND() LIMIT 1")
+    # myresult = mycursor.fetchone()
+    # return myresult["topic"]
+    text = """
+    An English speaking friend wants to spend a two week holiday in your region and has written
+asking for information and advice. Write a letter to your friend, in your letter:
+• Offer advice about where to stay
+• Give her advice about what to do
+• Give information about what clothes to bring
+Write at least 150 words. 
+    """
+    return text
+
 
 
 @app.route('/time')
