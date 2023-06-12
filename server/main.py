@@ -27,7 +27,7 @@ Write at least 150 words.
     """
     return text
 
-@app.route('/estimate_text',methods=["GET"])
+@app.route('/estimateAnswer',methods=["GET"])
 def rount_EstimateText():
     question = request.get_json()['question']
     answer = request.get_json()['answer']
