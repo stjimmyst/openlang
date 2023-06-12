@@ -8,32 +8,33 @@ import json
 
 test_resp = """
 {
-"criterias": [
-{
-"comment": "Overall, the response adequately addresses the task requirements and includes all the necessary elements.",
-"improvement": "To further improve this criteria, you can provide more specific details about the situation and the potential dangers posed by the dogs.",
-"error": "The response could benefit from providing more specific examples or incidents to support the claim of lack of control.",
-"band": 6
-},
-{
-"comment": "The response effectively explains why the dogs were a danger to others, highlighting the potential risks and negative impact on safety and well-being.",
-"improvement": "To enhance this criteria, you can provide additional examples or specific incidents illustrating the dangers posed by uncontrolled dogs.",
-"error": "No significant errors identified.",
+"ta": {
+"comment": "The response adequately addresses the task requirements by describing the situation, explaining why the dogs were a danger to others, and proposing a solution. The writer provides specific details and expresses their concern effectively.",
+"improvements": "To further improve the task achievement, the writer could consider providing more specific examples or incidents to support their claim about the lack of control and danger posed by the dogs. This would strengthen their argument and make it more compelling.",
+"errors": [],
 "band": 7
 },
-{
-"comment": "The response proposes a solution by suggesting increasing penalties for rule violations and relocating the dog park away from the children's playground.",
-"improvement": "To strengthen this criteria, you can provide more detailed justifications for your proposed solutions and consider offering alternative suggestions.",
-"error": "No significant errors identified.",
-"band": 7
+"cc": {
+"comment": "The response demonstrates good coherence and cohesion. The ideas are logically organized and connected, allowing the reader to follow the writer's thoughts easily.",
+"improvements": "To enhance coherence, the writer could consider using transition words or phrases between the sentences and paragraphs. These would help to establish clearer connections and improve the overall flow of the email.",
+"errors": [],
+"band": 8
 },
-{
-"comment": "Overall, the response demonstrates sufficient language proficiency with a good range of vocabulary and sentence structures.",
-"improvement": "To further improve this criteria, you can vary your sentence structures more, use more advanced vocabulary, and pay attention to grammar and punctuation.",
-"error": "Minor errors in punctuation and capitalization (e.g., 'withut' instead of 'without').",
-"band": 6
+"lr": {
+"comment": "The response exhibits a good range of vocabulary and language resources. The writer uses appropriate words and phrases to express their ideas and concerns effectively.",
+"improvements": "To further enhance the lexical resource, the writer could incorporate more varied vocabulary and idiomatic expressions. This would add richness and depth to their writing, making it more engaging for the reader.",
+"errors": [],
+"band": 8
+},
+"gra": {
+"comment": "The response demonstrates a good level of grammatical accuracy. The sentences are generally well-formed and convey the intended meaning clearly.",
+"improvements": "To improve grammatical accuracy, the writer should pay attention to subject-verb agreement. In the sentence 'Big creatures like this dog, walking around the park without control, may be not only a source of danger but also a cause of various viruses for humans,' it should be 'may not only be a source of danger but also a cause.' Additionally, the sentence 'Furthermore, it will be a good idea to move the dog park far away from the children's playground' could be revised to 'Furthermore, it would be a good idea to move the dog park far away from the children's playground.'",
+"errors": [
+"Subject-verb agreement: 'may be not' should be 'may not be'",
+"Verb tense: 'it will be' should be 'it would be'"
+],
+"band": 7
 }
-]
 }
 """
 API_KEY = "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"
