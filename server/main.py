@@ -1,4 +1,4 @@
-from flask import Flask,request
+from flask import Flask,request,got_request_exception
 import time, os
 import mysql.connector
 import gpt
@@ -29,11 +29,15 @@ Write at least 150 words.
 
 @app.route('/estimateAnswer',methods=["GET"])
 def rount_EstimateText():
-    question = request.get_json()['question']
-    answer = request.get_json()['answer']
-    tmp = gpt.estimate_text(question,answer)
-
-    return {'body': tmp}
+    try:
+        question = request.get_json()['question']
+        answer = request.get_json()['answer']
+        tmp = gpt.estimate_text(question,answer)
+        return {'body': tmp}
+    except Exception as e:
+        return {
+            'request': str(request.data),
+            'body': str(e)}
 
 @app.route('/time')
 def get_current_time():
