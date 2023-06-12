@@ -103,8 +103,8 @@ Write at least 150 words.
 @app.route('/estimateAnswer',methods=["GET","POST"])
 def rount_EstimateText():
     # try:
-        question = request.get_json()['question']
-        answer = request.get_json()['answer']
+    question = request.get_json()['question']
+    answer = request.get_json()['answer']
 
         # openai.api_key = API_KEY
         # prompt = prompt_template.format(task=task, response=response, format=format)
@@ -118,7 +118,10 @@ def rount_EstimateText():
         # )
         # tmp = completion.choices[0].message["content"]
         # print(tmp)
-        return {'body': test_resp}
+
+    esse = json.loads(test_resp)
+    print(esse)
+    return {'body': esse}
     # except Exception as e:
     #     return {
     #         'request': str(request.data),
