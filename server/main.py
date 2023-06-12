@@ -6,6 +6,36 @@ import gpt
 import openai
 import json
 
+test_resp = """
+{
+"criterias": [
+{
+"comment": "Overall, the response adequately addresses the task requirements and includes all the necessary elements.",
+"improvement": "To further improve this criteria, you can provide more specific details about the situation and the potential dangers posed by the dogs.",
+"error": "The response could benefit from providing more specific examples or incidents to support the claim of lack of control.",
+"band": 6
+},
+{
+"comment": "The response effectively explains why the dogs were a danger to others, highlighting the potential risks and negative impact on safety and well-being.",
+"improvement": "To enhance this criteria, you can provide additional examples or specific incidents illustrating the dangers posed by uncontrolled dogs.",
+"error": "No significant errors identified.",
+"band": 7
+},
+{
+"comment": "The response proposes a solution by suggesting increasing penalties for rule violations and relocating the dog park away from the children's playground.",
+"improvement": "To strengthen this criteria, you can provide more detailed justifications for your proposed solutions and consider offering alternative suggestions.",
+"error": "No significant errors identified.",
+"band": 7
+},
+{
+"comment": "Overall, the response demonstrates sufficient language proficiency with a good range of vocabulary and sentence structures.",
+"improvement": "To further improve this criteria, you can vary your sentence structures more, use more advanced vocabulary, and pay attention to grammar and punctuation.",
+"error": "Minor errors in punctuation and capitalization (e.g., 'withut' instead of 'without').",
+"band": 6
+}
+]
+}
+"""
 API_KEY = "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"
 prompt_template = """analyse my IELTS writing task1 by 4 criterias with score in range 1 to 9. Your response should be in json format {format}. Per each critera provide:
 comment: detalaied answer and expalanation
@@ -88,7 +118,7 @@ def rount_EstimateText():
         # )
         # tmp = completion.choices[0].message["content"]
         # print(tmp)
-        return {'body': "result"}
+        return {'body': test_resp}
     # except Exception as e:
     #     return {
     #         'request': str(request.data),
