@@ -1,7 +1,8 @@
 import openai
+import os
 import json
 
-API_KEY = "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"
+API_KEY = "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"
 prompt_template = """analyse my IELTS writing task1 by 4 criterias with score in range 1 to 9. Your response should be in json format {format}. Per each critera provide:
 comment: detalaied answer and expalanation
 improvements: how can  improve this criteria?
@@ -42,15 +43,17 @@ Alexey Ivanov.
 format="""{criterias:[{comment, improvement, error, band}]}"""
 
 def estimate_text(question, answer):
-    openai.api_key = API_KEY
-    prompt = prompt_template.format(task=question,response=answer,format=format)
+    os.environ["OPENAI_API_KEY"] = API_KEY
+    openai.api_key = os.environ["OPENAI_API_KEY"]
+    prompt = prompt_template.format(task=task,response=response,format=format)
     print(prompt)
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "user",
-             "content": prompt}
+             "content": "say hello!"}
         ]
     )
     tmp = completion.choices[0].message["content"]
+    print(tmp)
     return tmp
