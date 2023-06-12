@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask,request
 import time, os
 import mysql.connector
+import gpt
 
 app = Flask(__name__)
 
@@ -26,7 +27,13 @@ Write at least 150 words.
     """
     return text
 
+@app.route('/estimate_text',methods=["GET"])
+def rount_EstimateText():
+    question = request.get_json()['question']
+    answer = request.get_json()['answer']
+    tmp = gpt.estimate_text(question,answer)
 
+    return {'body': tmp}
 
 @app.route('/time')
 def get_current_time():
