@@ -39,7 +39,6 @@ test_resp = """
 }
 }
 """
-# API_KEY = "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"
 # prompt_template = """analyse my IELTS writing task1 by 4 criterias with score in range 1 to 9. Your response should be in json format {format}. Per each critera provide:
 # comment: detalaied answer and expalanation
 # improvements: how can  improve this criteria?

@@ -3,8 +3,7 @@ import os
 import json
 
 
-# API_KEY = "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"
-openai.api_key = "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"
+openai.api_key = os.environ["OPENAI_API_KEY"]
 prompt_template_speaking = """
 analyse my IELTS speaking (transcription) by 4 criterias with score in range 1 to 9 Your response should be in json format {format}. Per each critera provide:
 comment: detalaied answer and expalanation
@@ -113,7 +112,7 @@ testestimator = """
 }
 """
 def estimateTranscription(question,transcription):
-    # os.environ["OPENAI_API_KEY"] = API_KEY
+
     prompt = prompt_template_speaking.format(task=question,response=transcription,format=speaking_format)
     print(prompt)
     completion = openai.ChatCompletion.create(

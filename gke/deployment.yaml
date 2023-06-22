@@ -21,6 +21,9 @@ spec:
         image: "us-central1-docker.pkg.dev/endless-matter-387302/openlang/server:latest"
         ports:
           - containerPort: 5000
+        env:
+          - name: OPENAI_API_KEY
+            value: mykey
 ---
 apiVersion: "autoscaling/v2"
 kind: "HorizontalPodAutoscaler"
