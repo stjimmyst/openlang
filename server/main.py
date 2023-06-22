@@ -2,6 +2,8 @@ from flask import Flask,request,got_request_exception
 import time, os
 import mysql.connector
 import gpt
+from werkzeug.utils import secure_filename
+
 
 import openai
 import json
@@ -86,6 +88,14 @@ app = Flask(__name__)
 #   database="data"
 # )
 
+def getRandomSpeakingTopic():
+    text = """Describe a house or apartment you would like to live in.
+You should say:
+• where it is / Where it would be
+• what you would (like to) do there
+• who you would (like to) live therewith
+• and explain why you would like to live in this place."""
+    return text
 def getRandomTopic():
     # mycursor = mydb.cursor(dictionary=True)
     # mycursor.execute("SELECT topic FROM Topics ORDER BY RAND() LIMIT 1")
@@ -118,8 +128,8 @@ def rount_EstimateText():
         # )
         # tmp = completion.choices[0].message["content"]
         # print(tmp)
-
-    esse = json.loads(test_resp)
+    #gpt.estimate_text(question,answer)
+    esse = json.loads(gpt.estimate_text(question,answer))
     print(esse)
     return {'body': esse}
     # except Exception as e:
@@ -136,9 +146,31 @@ def route_getRandomTopic():
     res = getRandomTopic()
     return {'topic': res}
 
+@app.route('/getRandomSpeakingTopic')
+def route_getRandomSpeakingTopic():
+    res = getRandomSpeakingTopic()
+    return {'topic': res}
+
 @app.route('/')
 def default_route():
     return {'value':"Hello pridurok"}
+
+@app.route("/voice",methods=["GET","POST"])
+def post_voice():
+    if request.files.get("file") is None:
+        return {'failed': 'OK'}
+
+
+    f = request.files["file"]
+    question = json.loads(request.form.get('question'))['question']
+    f.save(secure_filename(f.filename))
+    transcription = gpt.voiceToText("audiofile.mp3")
+    #transcription = "my transcription"
+    estimation = gpt.estimateTranscription(question,transcription)
+    print(transcription)
+    print(question)
+
+    return {'transcription':transcription, 'response':json.loads(estimation)}
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
