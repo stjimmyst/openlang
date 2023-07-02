@@ -1,6 +1,5 @@
 from flask import Flask,request,got_request_exception
 import time, os
-import mysql.connector
 import gpt,user
 from werkzeug.utils import secure_filename
 import asyncio
