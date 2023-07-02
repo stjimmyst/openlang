@@ -1,91 +1,18 @@
 from flask import Flask,request,got_request_exception
 import time, os
 import mysql.connector
-import gpt
+import gpt,user
 from werkzeug.utils import secure_filename
+import asyncio
 
+import random
 
 import openai
 import json
 
-test_resp = """
-{
-"ta": {
-"comment": "The response adequately addresses the task requirements by describing the situation, explaining why the dogs were a danger to others, and proposing a solution. The writer provides specific details and expresses their concern effectively.",
-"improvements": "To further improve the task achievement, the writer could consider providing more specific examples or incidents to support their claim about the lack of control and danger posed by the dogs. This would strengthen their argument and make it more compelling.",
-"errors": [],
-"band": 7
-},
-"cc": {
-"comment": "The response demonstrates good coherence and cohesion. The ideas are logically organized and connected, allowing the reader to follow the writer's thoughts easily.",
-"improvements": "To enhance coherence, the writer could consider using transition words or phrases between the sentences and paragraphs. These would help to establish clearer connections and improve the overall flow of the email.",
-"errors": [],
-"band": 8
-},
-"lr": {
-"comment": "The response exhibits a good range of vocabulary and language resources. The writer uses appropriate words and phrases to express their ideas and concerns effectively.",
-"improvements": "To further enhance the lexical resource, the writer could incorporate more varied vocabulary and idiomatic expressions. This would add richness and depth to their writing, making it more engaging for the reader.",
-"errors": [],
-"band": 8
-},
-"gra": {
-"comment": "The response demonstrates a good level of grammatical accuracy. The sentences are generally well-formed and convey the intended meaning clearly.",
-"improvements": "To improve grammatical accuracy, the writer should pay attention to subject-verb agreement. In the sentence 'Big creatures like this dog, walking around the park without control, may be not only a source of danger but also a cause of various viruses for humans,' it should be 'may not only be a source of danger but also a cause.' Additionally, the sentence 'Furthermore, it will be a good idea to move the dog park far away from the children's playground' could be revised to 'Furthermore, it would be a good idea to move the dog park far away from the children's playground.'",
-"errors": [
-"Subject-verb agreement: 'may be not' should be 'may not be'",
-"Verb tense: 'it will be' should be 'it would be'"
-],
-"band": 7
-}
-}
-"""
-# prompt_template = """analyse my IELTS writing task1 by 4 criterias with score in range 1 to 9. Your response should be in json format {format}. Per each critera provide:
-# comment: detalaied answer and expalanation
-# improvements: how can  improve this criteria?
-# errors: example of errors in essay.
-# band: you estimated band by criteria
-#
-# TASK:
-# {task}
-# RESPONSE:
-# {response}
-# """
-# task = """
-# You recently visited a dog park and were disturbed by the lack of control the owners
-# imposed on their dogs, making them dangerous for everyone around.
-#
-# Write an email to your local municipality in about 150-200
-# words. Your email should include the following things:
-# • Describe the situation
-# • Explain why the dogs were a danger to others
-# • Propose a solution
-# """
-# response = """
-# Dear local municipality,
-# The main purpose of my writing today is to lodge a complaint about the dog park in our town, that I visited with my family last weekend.
-# To begin with, I was playing with my kids when a gigantic dog without a leash
-# suddenly appeared behind my back.
-# My kids were very scared by this aggressive barking creature and started crying.
-# It's very important to respect the rule of each and other in our society.
-# Big creatures like this dog, walking around the park withut control, may be not only a source of danger but also a cause of various viruses for humans.
-# Based on what I have provided you today, I may suggest a few options to solve this problem.
-# Firstly, I would strongly recommend increasing the amount of penalty for breaking the rules in our park. Furthermore, it will be a good idea to move the dog park far away from the children's playground.
-# I am looking forward to seeing how my suggestions translate to prompt actions from your side.
-# Your kind cooperation would be most appreciated.
-# Sincerely,
-# Alexey Ivanov.
-# """
-#
-# format="""{criterias:[{comment, improvement, error, band}]}"""
 
 app = Flask(__name__)
 
-# mydb = mysql.connector.connect(
-#   host="35.184.19.133",
-#   user="root",
-#   password="Flamingt0rch",
-#   database="data"
-# )
 
 def getRandomSpeakingTopic():
     text = """Describe a house or apartment you would like to live in.
@@ -108,6 +35,63 @@ asking for information and advice. Write a letter to your friend, in your letter
 Write at least 150 words. 
     """
     return text
+
+@app.route('/estimateSpeakingTest',methods=["GET","POST"])
+def routeEstimateSpeakingTest():
+    f = request.files["file"]
+    question = json.loads(request.form.get('question'))['question']
+    return {'body':{
+        'transcription': "testing transcription from the server",
+        'fc':
+            {
+                            'comment':"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+                            'band': random.randint(1,9)
+            },
+        'gra':
+            {
+                'comment': "comment2",
+                'band': random.randint(1, 9)
+            },
+        'lr':
+            {
+                'comment': "comment3",
+                'band': random.randint(1, 9)
+            },
+        'p':
+            {
+                'comment': "comment4",
+                'band': random.randint(1, 9)
+            }
+                    }
+            }
+@app.route('/estimateWritingTest',methods=["GET","POST"])
+def routeEstimateWritingTest():
+    question = request.get_json()['question']
+    answer = request.get_json()['answer']
+    return {'body':{
+        'ta':
+            {
+                            'comment':"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+                            'band': random.randint(1,9)
+            },
+        'gra':
+            {
+                'comment': "comment2",
+                'band': random.randint(1, 9)
+            },
+        'lr':
+            {
+                'comment': "comment3",
+                'band': random.randint(1, 9)
+            },
+        'cc':
+            {
+                'comment': "comment4",
+                'band': random.randint(1, 9)
+            }
+                    }
+            }
+
 
 @app.route('/estimateAnswer',methods=["GET","POST"])
 def rount_EstimateText():
@@ -154,22 +138,36 @@ def route_getRandomSpeakingTopic():
 def default_route():
     return {'value':"Hello pridurok"}
 
-@app.route("/voice",methods=["GET","POST"])
-def post_voice():
+@app.route('/WritingEstimation',methods=["GET","POST"])
+async def WritingEstimationRoute():
+    question = request.get_json()['question']
+    answer = request.get_json()['answer']
+    user = request.get_json()['user']
+    # res = await gpt.WritingEstimationChatModel(question,answer)
+    res = await gpt.WritingEstimationChat(question, answer,user,gpt.WritingType)
+    return {'body':res}
+
+@app.route("/SpeakingEstimation",methods=["GET","POST"])
+async def SpeakingEstimationRoute():
     if request.files.get("file") is None:
         return {'failed': 'OK'}
-
-
     f = request.files["file"]
-    question = json.loads(request.form.get('question'))['question']
+    params = json.loads(request.form.get('params'));
+    question = params['question']
+    user = params['user']
     f.save(secure_filename(f.filename))
-    transcription = gpt.voiceToText("audiofile.mp3")
-    #transcription = "my transcription"
-    estimation = gpt.estimateTranscription(question,transcription)
-    print(transcription)
-    print(question)
+    answer = gpt.voiceToText("audiofile.mp3")
+    res = await gpt.WritingEstimationChat(question, answer, user, gpt.SpeakingType)
+    return {'transcription':answer, 'body':res}
 
-    return {'transcription':transcription, 'response':json.loads(estimation)}
+
+@app.route("/login",methods=["POST"])
+def LoginRoute():
+    profile = request.get_json()['profile']
+    print(profile)
+    user.loginUser(profile)
+    return {"response":"OK"}
+
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
