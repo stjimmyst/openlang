@@ -1,15 +1,17 @@
 from google.cloud import firestore
+import logging
 
 
 def getUserLevel(username):
-    print("get response from")
-    print(username)
     level = 0
-    db = firestore.Client()
-    doc = db.collection("users").document(username).get()
-    if doc.exists:
-        level = doc.get("level")
-    print(level)
+    try:
+        db = firestore.Client()
+        doc = db.collection("users").document(username).get()
+        if doc.exists:
+            level = doc.get("level")
+        logging.debug("request from: " + str(username) + ". level=" + str(level))
+    except:
+        logging.error("cant init firestore db." )
     return level
 
 def loginUser(profile):

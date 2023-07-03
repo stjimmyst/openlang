@@ -3,7 +3,7 @@
 #COPY pom.xml /home/app
 #RUN mvn -f /home/app/pom.xml clean package -P flink-runner
 
-FROM python:3.8-alpine
+FROM us-central1-docker.pkg.dev/endless-matter-387302/openlang/server-base-image:latest
 COPY . /app
 WORKDIR /app
 RUN apk add gcc musl-dev libffi-dev

@@ -9,6 +9,9 @@ import random
 import openai
 import json
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 
@@ -171,3 +174,9 @@ def LoginRoute():
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
+    logging.debug("some message")
+    app.logger.debug("debug log info")
+    app.logger.info("Info log information")
+    app.logger.warning("Warning log info")
+    app.logger.error("Error log info")
+    app.logger.critical("Critical log info")
