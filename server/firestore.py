@@ -39,6 +39,7 @@ def getRandomTopic(type):
         print(random_topic)
         topics = db.collection(collection).where("id","==",random_topic).stream()
         for t in topics:
+
             topic = t.get("topic")
             print(topic)
     return topic.replace("\\n", "\n");

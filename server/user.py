@@ -1,5 +1,24 @@
 from google.cloud import firestore
 import logging
+import payments
+
+def updateUserLevelAfterPurchase(email, amount):
+    if (amount==payments.IntermediatePrize):
+        level=1
+    elif (amount==payments.AdvancedPrize):
+        level = 2
+    try:
+        db = firestore.Client()
+        users_collection = db.collection("users")
+        users = users_collection.where("email", "==", email).get()
+        for u in users:
+            doc = users_collection.document(u.id)  # doc is DocumentReference
+            field_updates = {"level": level}
+            doc.update(field_updates)
+    except:
+        logging.error("can't update user level after purchase")
+
+
 
 
 def getUserLevel(username):

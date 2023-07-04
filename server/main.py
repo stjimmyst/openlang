@@ -1,8 +1,10 @@
-from flask import Flask,request,got_request_exception
+from flask import Flask,request,jsonify,got_request_exception
 import time, os
 import gpt,user
 from werkzeug.utils import secure_filename
+import json
 import asyncio
+import stripe
 
 import random
 
@@ -15,6 +17,8 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
+stripe.api_key = os.environ.get('STRIPE_API_KEY')
+endpoint_secret = os.environ.get('STRIPE_ENDPOINT_SECRET')
 
 
 
@@ -150,6 +154,47 @@ def LoginRoute():
     user.loginUser(profile)
     return {"response":"OK"}
 
+@app.route('/paymentwebhook', methods=['POST'])
+def webhook():
+    event = None
+    payload = request.data
+
+    try:
+        event = json.loads(payload)
+    except:
+        print('⚠️  Webhook error while parsing basic request.' + str(e))
+        return jsonify(success=False)
+    if endpoint_secret:
+        # Only verify the event if there is an endpoint secret defined
+        # Otherwise use the basic event deserialized with json
+        sig_header = request.headers.get('stripe-signature')
+        try:
+            event = stripe.Webhook.construct_event(
+                payload, sig_header, endpoint_secret
+            )
+        except stripe.error.SignatureVerificationError as e:
+            print('⚠️  Webhook signature verification failed.' + str(e))
+            return jsonify(success=False)
+
+    # Handle the event
+    if event and event['type'] == 'charge.succeeded':
+        payment_intent = event['data']['object']  # contains a stripe.PaymentIntent
+        user_email = payment_intent['email']
+        product_price = payment_intent['amount']
+        user.updateUserLevelAfterPurchase(user_email,product_price)
+        print(user_email+" -> "+product_price)
+        print('Payment for {} succeeded'.format(payment_intent['amount']))
+        # Then define and call a method to handle the successful payment intent.
+        # handle_payment_intent_succeeded(payment_intent)
+    elif event['type'] == 'payment_method.attached':
+        payment_method = event['data']['object']  # contains a stripe.PaymentMethod
+        # Then define and call a method to handle the successful attachment of a PaymentMethod.
+        # handle_payment_method_attached(payment_method)
+    else:
+        # Unexpected event type
+        print('Unhandled event type {}'.format(event['type']))
+
+    return jsonify(success=True)
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
