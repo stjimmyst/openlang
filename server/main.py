@@ -178,11 +178,13 @@ def webhook():
 
     # Handle the event
     if event and event['type'] == 'charge.succeeded':
+        payment_intent = {}
         payment_intent = event['data']['object']  # contains a stripe.PaymentIntent
-        user_email = payment_intent['email']
-        product_price = payment_intent['amount']
-        user.updateUserLevelAfterPurchase(user_email,product_price)
-        print(user_email+" -> "+product_price)
+        print(payment_intent)
+        user_email = payment_intent.get('billing_details').get('email','defaultemail')
+        product_price = payment_intent.get('amount',-1)
+        user.updateUserLevelAfterPurchase(str(user_email),product_price)
+        print(str(user_email)+" -> "+str(product_price))
         print('Payment for {} succeeded'.format(payment_intent['amount']))
         # Then define and call a method to handle the successful payment intent.
         # handle_payment_intent_succeeded(payment_intent)

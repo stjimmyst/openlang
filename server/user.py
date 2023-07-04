@@ -3,6 +3,7 @@ import logging
 import payments
 
 def updateUserLevelAfterPurchase(email, amount):
+    logging.info("[updateUserLevelAfterPurchase]. user email: "+email+". purchase: "+ str(amount)+". updating....")
     if (amount==payments.IntermediatePrize):
         level=1
     elif (amount==payments.AdvancedPrize):
@@ -15,6 +16,7 @@ def updateUserLevelAfterPurchase(email, amount):
             doc = users_collection.document(u.id)  # doc is DocumentReference
             field_updates = {"level": level}
             doc.update(field_updates)
+            logging.info("[updateUserLevelAfterPurchase]. user email: "+email+". purchase: "+ str(amount)+". updating OK")
     except:
         logging.error("can't update user level after purchase")
 
