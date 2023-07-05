@@ -42,9 +42,11 @@ def loginUser(profile):
     doc = db.collection("users").document(uid).get()
     if doc.exists:
         print("UID="+uid+"already exists")
+        return doc.get("level")
     else:
         tmp = profile;
-        tmp["level"]=1
+        tmp["level"]=0
         db.collection("users").add(tmp,uid)
+        return 0
 
 

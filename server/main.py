@@ -151,8 +151,14 @@ async def SpeakingEstimationRoute():
 def LoginRoute():
     profile = request.get_json()['profile']
     print(profile)
-    user.loginUser(profile)
-    return {"response":"OK"}
+    level = user.loginUser(profile)
+    return {"level":level}
+
+@app.route('/getUserLevel', methods=['GET'])
+def GetUserLevelRoute():
+    usr = request.get_json()['user']
+    res=user.getUserLevel(usr)
+    return {"level": res}
 
 @app.route('/paymentwebhook', methods=['POST'])
 def webhook():
