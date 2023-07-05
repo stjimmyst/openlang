@@ -5,4 +5,4 @@ import os
 # endpoint_secret = os.environ.get('STRIPE_ENDPOINT_SECRET')
 
 IntermediatePrize = 1499
-AdvancedPrize = 2899
+AdvancedPrize = 2499
