@@ -188,9 +188,11 @@ def webhook():
         payment_intent = event['data']['object']  # contains a stripe.PaymentIntent
         print(payment_intent)
         user_email = payment_intent.get('customer_email')
+
         product_price = payment_intent.get('amount_paid',-1)
-        period_start = payment_intent.get('period_start')
-        period_end = payment_intent.get('period_end')
+        period = event['data']['object']['lines']['data'][0]['period']
+        period_start = period.get("start")
+        period_end = period.get("end")
         user.updateUserLevelAfterPurchase(str(user_email),product_price,period_start, period_end)
         print(str(user_email)+" -> "+str(product_price))
         print('Payment for {} succeeded'.format(product_price))
