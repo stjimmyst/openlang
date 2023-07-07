@@ -182,18 +182,22 @@ def webhook():
             print('⚠️  Webhook signature verification failed.' + str(e))
             return jsonify(success=False)
 
-    # Handle the event
-    if event and event['type'] == 'charge.succeeded':
+    # Handle the even
+    if event and event['type'] == 'invoice.payment_succeeded':
         payment_intent = {}
         payment_intent = event['data']['object']  # contains a stripe.PaymentIntent
         print(payment_intent)
-        user_email = payment_intent.get('billing_details').get('email','defaultemail')
-        product_price = payment_intent.get('amount',-1)
-        user.updateUserLevelAfterPurchase(str(user_email),product_price)
+        user_email = payment_intent.get('customer_email')
+        product_price = payment_intent.get('amount_paid',-1)
+        period_start = payment_intent.get('period_start')
+        period_end = payment_intent.get('period_end')
+        user.updateUserLevelAfterPurchase(str(user_email),product_price,period_start, period_end)
         print(str(user_email)+" -> "+str(product_price))
-        print('Payment for {} succeeded'.format(payment_intent['amount']))
+        print('Payment for {} succeeded'.format(product_price))
         # Then define and call a method to handle the successful payment intent.
         # handle_payment_intent_succeeded(payment_intent)
+
+
     elif event['type'] == 'payment_method.attached':
         payment_method = event['data']['object']  # contains a stripe.PaymentMethod
         # Then define and call a method to handle the successful attachment of a PaymentMethod.
@@ -207,10 +211,3 @@ def webhook():
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
-    logging.debug(os.environ)
-    logging.debug("some message")
-    app.logger.debug("debug log info")
-    app.logger.info("Info log information")
-    app.logger.warning("Warning log info")
-    app.logger.error("Error log info")
-    app.logger.critical("Critical log info")
