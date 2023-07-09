@@ -10,13 +10,14 @@ import random
 
 import openai
 import json
-import firestore
+import topics
 
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
+from ollogger import *
+from olfirestore import *
+from const import *
 
 app = Flask(__name__)
+
 stripe.api_key = os.environ.get('STRIPE_API_KEY')
 endpoint_secret = os.environ.get('STRIPE_ENDPOINT_SECRET')
 
@@ -112,12 +113,12 @@ def get_current_time():
 
 @app.route('/getRandomTopic')
 def route_getRandomTopic():
-    res = firestore.getRandomTopic(gpt.WritingType)
+    res = topics.getRandomTopic(WritingType)
     return {'topic': res}
 
 @app.route('/getRandomSpeakingTopic')
 def route_getRandomSpeakingTopic():
-    res = firestore.getRandomTopic(gpt.SpeakingType)
+    res = topics.getRandomTopic(SpeakingType)
     return {'topic': res}
 
 @app.route('/')
@@ -129,9 +130,10 @@ async def WritingEstimationRoute():
     question = request.get_json()['question']
     answer = request.get_json()['answer']
     user = request.get_json()['user']
-    # res = await gpt.WritingEstimationChatModel(question,answer)
-    res = await gpt.WritingEstimationChat(question, answer,user,gpt.WritingType)
-    return {'body':res}
+    res = await gpt.WritingEstimationChat(question, answer,user,WritingType)
+    tmp = {'question': question, 'body':res}
+    asyncio.create_task(OLSaveHistory(user, WritingType, tmp))
+    return tmp
 
 @app.route("/SpeakingEstimation",methods=["GET","POST"])
 async def SpeakingEstimationRoute():
@@ -143,14 +145,17 @@ async def SpeakingEstimationRoute():
     user = params['user']
     f.save(secure_filename(f.filename))
     answer = gpt.voiceToText("audiofile.mp3")
-    res = await gpt.WritingEstimationChat(question, answer, user, gpt.SpeakingType)
-    return {'transcription':answer, 'body':res}
+    res = await gpt.WritingEstimationChat(question, answer, user, SpeakingType)
+    tmp = {'question': question,'transcription':answer, 'body':res}
+    asyncio.create_task(OLSaveHistory(user,SpeakingType,tmp))
+    return tmp
 
 
 @app.route("/login",methods=["POST"])
 def LoginRoute():
+    print(request.json)
+    RequestLog("/login", request.json)
     profile = request.get_json()['profile']
-    print(profile)
     level = user.loginUser(profile)
     return {"level":level}
 
@@ -212,4 +217,5 @@ def webhook():
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
+    OL_logger.info("Flask server started")
     app.run(debug=True, host='0.0.0.0', port=port)

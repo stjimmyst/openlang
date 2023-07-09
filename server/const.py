@@ -1,0 +1,2 @@
+SpeakingType = "speaking"
+WritingType = "writing"

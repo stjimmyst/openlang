@@ -10,6 +10,7 @@ from langchain.llms import OpenAI
 from langchain.chains import ConversationChain
 from langchain.schema import messages_from_dict, messages_to_dict
 import random
+from const import *
 
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import (
@@ -26,8 +27,6 @@ from langchain.prompts.chat import (
 import user
 StubText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
 #StubText = "sdfsdfsdf"
-SpeakingType = "speaking"
-WritingType = "writing"
 JsonFormat = '("band","comment")'
 Improvements = [
     ["Errors and Grammatics","errors",ChatPromptTemplate.from_messages([

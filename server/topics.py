@@ -1,8 +1,9 @@
-import logging
 
-from google.cloud import firestore
 import random
 import gpt
+from ollogger import OL_logger
+from olfirestore import OL_firestore
+from const import *
 
 defaultSpeakingTopic = """Describe a house or apartment you would like to live in.
     You should say:
@@ -22,22 +23,21 @@ Write at least 150 words.
 IeltsSpeakingCollection = "ielts_speaking"
 IeltsWritingCollection = "ielts_writing"
 def getRandomTopic(type):
-    if (type==gpt.SpeakingType):
+    if (type==SpeakingType):
         collection=IeltsSpeakingCollection
         topic = defaultSpeakingTopic;
     else:
         collection=IeltsWritingCollection
         topic = defaultWritingTopic;
 
-    db = firestore.Client()
     number = 0
-    doc = db.collection(collection+"_count").document("count").get()
+    doc = OL_firestore.collection(collection+"_count").document("count").get()
     if doc.exists:
         number = doc.get("count")
-        logging.debug("collection count = "+ str(number))
+        OL_logger.warning("collection count = "+ str(number))
         random_topic = random.randint(0,number-1)
         print(random_topic)
-        topics = db.collection(collection).where("id","==",random_topic).stream()
+        topics = OL_firestore.collection(collection).where("id","==",random_topic).stream()
         for t in topics:
 
             topic = t.get("topic")
