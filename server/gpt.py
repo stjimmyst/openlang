@@ -11,6 +11,7 @@ from langchain.chains import ConversationChain
 from langchain.schema import messages_from_dict, messages_to_dict
 import random
 from const import *
+from ollogger import OL_logger
 
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import (
@@ -196,14 +197,18 @@ async def async_generate_random_criteria(key):
     return [key,tmp]
 
 async def async_generate_criteria(llm, msg, key):
-    print(msg)
-    resp = await llm.agenerate(msg)
-    rsp = resp.generations[0][0].text
-    print(rsp)
-    tmp = json.loads(resp.generations[0][0].text,strict=False)
-    tmp['stub'] = False
-    print(tmp)
-
+    exitFlag = 0
+    while (exitFlag == 0):
+        resp = await llm.agenerate(msg)
+        rsp = resp.generations[0][0].text
+        try:
+            tmp = json.loads(rsp,strict=False)
+            tmp['stub'] = False
+            exitFlag =1
+        except Exception as e:
+            OL_logger.error("GTP_response_json_converter: " + str(e))
+            OL_logger.debug("GTP_response_json_converter: " + str(rsp))
+            print(str(e)+". "+rsp)
     return [key,tmp]
 
 
