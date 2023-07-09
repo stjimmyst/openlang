@@ -13,7 +13,7 @@ import json
 import topics
 
 from ollogger import *
-from olfirestore import *
+from olfirestore import OLSaveHistory
 from const import *
 
 app = Flask(__name__)
