@@ -19,10 +19,13 @@ async def OLSaveHistory(username,WritingSpeaking,dict_res):
     else:
         OL_logger.error("OLSaveHistory. Wrong type "+ WritingSpeaking)
         return
-    col = OL_firestore.collection("users", username, col_name)
-    tmp = dict_res
-    tmp["timestamp"] = time.time()
-    col.add(tmp)
+    try:
+        col = OL_firestore.collection("users", username, col_name)
+        tmp = dict_res
+        tmp["timestamp"] = time.time()
+        col.add(tmp)
+    except Exception as e:
+        OL_logger.error("OLSaveHistory: " + str(e))
 
 
 
