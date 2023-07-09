@@ -121,9 +121,9 @@ def GenerateConfigForUser(inputuser,model):
     improvements = False;
     if (level == 0):
         max_tokens=300
-        # rnd = random.randint(0,GlobalNumberOfCriteria-1)
-        # random_criterias.remove(rnd)
-        # chat_criterias = [rnd]
+        rnd = random.randint(0,GlobalNumberOfCriteria-1)
+        random_criterias.remove(rnd)
+        chat_criterias = [rnd]
     elif (level==1):
         max_tokens=300
         chat_criterias = random_criterias
@@ -179,8 +179,8 @@ def memory():
 def voiceToText(filename):
     if True:
         audio_file = open(filename, "rb")
-        # resp = openai.Audio.transcribe("whisper-1", audio_file)
-        resp = openai.Audio.translate("whisper-1", audio_file)
+        resp = openai.Audio.transcribe("whisper-1", audio_file, prompt="Hello, uum, you know, aahhhh, my name is Dmitry")
+        # resp = openai.Audio.translate("whisper-1", audio_file, )
         print(resp)
         tmp = resp['text']
         print(tmp)
