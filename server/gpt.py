@@ -26,12 +26,12 @@ from langchain.prompts.chat import (
     HumanMessagePromptTemplate,
 )
 import user
-StubText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+StubText = "This is example of response which is not related to your task. Plase choose the best price plan for your goals."
 #StubText = "sdfsdfsdf"
 JsonFormat = '("band","comment")'
 Improvements = [
     ["Errors and Grammatics","errors",ChatPromptTemplate.from_messages([
-        SystemMessagePromptTemplate.from_template("You are helpful assistant. Analyze human IELTS writing in English and find errors with grammatical and tenses. Provide list of these errors with rules and explanations, do not do any corrections and not return human writing"),
+        SystemMessagePromptTemplate.from_template("You are helpful assistant. Analyze human writing in English and find errors with grammatical and tenses. Provide list of these errors with rules and explanations. Don't do any corrections and don't return human writing. Find at least 5 mistakes."),
         HumanMessagePromptTemplate.from_template("\n{answer}")
     ])],
     ["Selfimprovements","selfimprovements",ChatPromptTemplate.from_messages([
