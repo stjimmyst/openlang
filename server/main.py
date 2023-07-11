@@ -132,9 +132,10 @@ async def WritingEstimationRoute():
     question = request.get_json()['question']
     answer = request.get_json()['answer']
     user = request.get_json()['user']
+    request_uuid = str(uuid.uuid4())
     res = await gpt.WritingEstimationChat(question, answer,user,WritingType)
     tmp = {'question': question, 'body':res}
-    asyncio.create_task(OLSaveHistory(user, WritingType, tmp))
+    asyncio.create_task(OLSaveHistory(user, WritingType, tmp,request_uuid))
     return tmp
 
 @app.route("/SpeakingEstimation",methods=["GET","POST"])
