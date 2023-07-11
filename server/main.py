@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 import json
 import asyncio
 import stripe
+import uuid
 
 import random
 
@@ -14,6 +15,7 @@ import topics
 
 from ollogger import *
 from olfirestore import OLSaveHistory
+from olfilestorage import OLSaveAudio
 from const import *
 
 app = Flask(__name__)
@@ -143,11 +145,13 @@ async def SpeakingEstimationRoute():
     params = json.loads(request.form.get('params'));
     question = params['question']
     user = params['user']
-    f.save(secure_filename(f.filename))
-    answer = gpt.voiceToText("audiofile.mp3")
+    request_uuid = str(uuid.uuid4())
+    f.save(secure_filename(request_uuid+".mp3"))
+    answer = gpt.voiceToText(request_uuid+".mp3")
     res = await gpt.WritingEstimationChat(question, answer, user, SpeakingType)
     tmp = {'question': question,'transcription':answer, 'body':res}
-    asyncio.create_task(OLSaveHistory(user,SpeakingType,tmp))
+    asyncio.create_task(OLSaveHistory(user,SpeakingType,tmp,request_uuid))
+    asyncio.create_task(OLSaveAudio(user, request_uuid))
     return tmp
 
 

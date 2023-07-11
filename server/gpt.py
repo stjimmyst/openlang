@@ -122,9 +122,9 @@ def GenerateConfigForUser(inputuser,model):
     improvements = False;
     if (level == 0):
         max_tokens=300
-        rnd = random.randint(0,GlobalNumberOfCriteria-1)
-        random_criterias.remove(rnd)
-        chat_criterias = [rnd]
+        #rnd = random.randint(0,GlobalNumberOfCriteria-1)
+        random_criterias=[0,1,2]
+        chat_criterias = [3]
     elif (level==1):
         max_tokens=300
         chat_criterias = random_criterias

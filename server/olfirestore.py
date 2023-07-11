@@ -8,7 +8,7 @@ OL_firestore = firestore.Client()
 
 print("FirestoreDB initialized")
 
-async def OLSaveHistory(username,WritingSpeaking,dict_res):
+async def OLSaveHistory(username,WritingSpeaking,dict_res,uuid):
     col_name = ""
     if (WritingSpeaking == WritingType):
         OL_logger.info("Saving Writing history")
@@ -23,7 +23,7 @@ async def OLSaveHistory(username,WritingSpeaking,dict_res):
         col = OL_firestore.collection("users", username, col_name)
         tmp = dict_res
         tmp["timestamp"] = time.time()
-        col.add(tmp)
+        col.add(tmp,uuid)
     except Exception as e:
         OL_logger.error("OLSaveHistory: " + str(e))
 
