@@ -134,7 +134,7 @@ async def WritingEstimationRoute():
     user = request.get_json()['user']
     request_uuid = str(uuid.uuid4())
     res = await gpt.WritingEstimationChat(question, answer,user,WritingType)
-    tmp = {'question': question, 'body':res}
+    tmp = {'question': question, 'results':res}
     asyncio.create_task(OLSaveHistory(user, WritingType, tmp,request_uuid))
     return tmp
 
@@ -150,7 +150,7 @@ async def SpeakingEstimationRoute():
     f.save(secure_filename(request_uuid+".mp3"))
     answer = gpt.voiceToText(request_uuid+".mp3")
     res = await gpt.WritingEstimationChat(question, answer, user, SpeakingType)
-    tmp = {'question': question,'transcription':answer, 'body':res}
+    tmp = {'question': question,'transcription':answer, 'results':res}
     asyncio.create_task(OLSaveHistory(user,SpeakingType,tmp,request_uuid))
     asyncio.create_task(OLSaveAudio(user, request_uuid))
     return tmp

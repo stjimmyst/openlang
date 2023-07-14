@@ -6,9 +6,9 @@ from olfirestore import OL_firestore
 def updateUserLevelAfterPurchase(email, amount, period_start, period_end):
     OL_logger.info("[updateUserLevelAfterPurchase]. user email: "+email+". purchase: "+ str(amount)+". updating....")
     if (amount==payments.IntermediatePrize):
-        level=1
+        level=2
     elif (amount==payments.AdvancedPrize):
-        level = 2
+        level = 3
     try:
         users_collection = OL_firestore.collection("users")
         users = users_collection.where("email", "==", email).get()
@@ -38,9 +38,9 @@ def getUserLevel(username):
 
             if (current_dt > period_end):
                 tmp = coll.document(doc.id)
-                tmp.update({"level": 0})
+                tmp.update({"level": 1})
                 OL_logger.debug("Subscription expired: setting level=0 for user "+username)
-                level = 0
+                level = 1
             else:
                 level = doc.get("level")
 
@@ -59,7 +59,7 @@ def loginUser(profile):
         return getUserLevel(uid)
     else:
         tmp = profile;
-        tmp["level"]=0
+        tmp["level"]=1
         tmp["period_start"]=0
         tmp["period_end"] = 0
         OL_firestore.collection("users").add(tmp,uid)

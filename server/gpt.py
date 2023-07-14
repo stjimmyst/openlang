@@ -34,14 +34,14 @@ Improvements = [
         SystemMessagePromptTemplate.from_template("You are helpful assistant. Analyze human writing in English and find errors with grammatical and tenses. Provide list of these errors with rules and explanations. Don't do any corrections and don't return human writing. Find at least 5 mistakes."),
         HumanMessagePromptTemplate.from_template("\n{answer}")
     ])],
-    ["Selfimprovements","selfimprovements",ChatPromptTemplate.from_messages([
+    ["Improvement","selfimprovements",ChatPromptTemplate.from_messages([
         SystemMessagePromptTemplate.from_template("You are helpful assistant. Analyze human IELTS writing in English and provide list of paraphrasing and changes in sentences to improve writing."),
         HumanMessagePromptTemplate.from_template("\n{answer}")
     ])]
 ]
 
 IeltsSpeakingTask1CriteriaChat = [
-    ["Fluence&Coherence","fc",ChatPromptTemplate.from_messages([
+    ["Fluence & Coherence","fc",ChatPromptTemplate.from_messages([
         SystemMessagePromptTemplate.from_template("You are IELTS Speaking examiner who estimate RESPONSE with scores 1 to 9 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
         HumanMessagePromptTemplate.from_template("TASK:\n{question}\nRESPONSE:\n{answer}")
     ])],
@@ -64,7 +64,7 @@ IeltsWritingTask1CriteriaChat = [
         SystemMessagePromptTemplate.from_template("You are IELTS Writing examiner who estimate RESPONSE with scores 1 to 9 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
         HumanMessagePromptTemplate.from_template("TASK:\n{question}\nRESPONSE:\n{answer}")
     ])],
-    ["Coherence&Cohesion","cc",ChatPromptTemplate.from_messages([
+    ["Coherence & Cohesion","cc",ChatPromptTemplate.from_messages([
         SystemMessagePromptTemplate.from_template("You are IELTS Writing examiner who estimate RESPONSE with scores 1 to 9 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
         HumanMessagePromptTemplate.from_template("RESPONSE:\n{answer}")
     ])],
@@ -120,15 +120,23 @@ def GenerateConfigForUser(inputuser,model):
     random_criterias = list(range(0,GlobalNumberOfCriteria))
     chat_criterias = []
     improvements = False;
+    #unauthorized
     if (level == 0):
         max_tokens=300
         #rnd = random.randint(0,GlobalNumberOfCriteria-1)
-        random_criterias=[0,1,2]
-        chat_criterias = [3]
+        random_criterias=[0,1,2,3]
+        chat_criterias = []
+    # authorized free
     elif (level==1):
         max_tokens=300
-        chat_criterias = random_criterias
+        random_criterias = [0, 1, 2]
+        chat_criterias = [3]
+
+    # basic paid
+    elif (level == 2):
+        max_tokens = 300
         random_criterias = []
+        chat_criterias = [0, 1, 2, 3]
     else:
         max_tokens = 300
         chat_criterias = random_criterias
@@ -187,37 +195,41 @@ def voiceToText(filename):
         print(tmp)
         return tmp
 
-async def async_generate_random_improvement(key):
-    tmp = {"comment": StubText, "stub":True}
+async def async_generate_random_improvement(key, criteria_name):
+    tmp = {"comment": StubText, "stub":True, "name": criteria_name}
     print(tmp)
-    return [key,tmp]
-async def async_generate_random_criteria(key):
-    tmp = {"band": str(random.randint(1,9)), "comment": StubText, "stub": True}
+    return [key,tmp,"improvement"]
+async def async_generate_random_criteria(key, criteria_name):
+    tmp = {"band": random.randint(1,9), "comment": StubText, "stub": True, "name": criteria_name}
     print(tmp)
-    return [key,tmp]
+    return [key,tmp,"criteria"]
 
-async def async_generate_criteria(llm, msg, key):
+async def async_generate_criteria(llm, msg, key, criteria_name):
     exitFlag = 0
     while (exitFlag == 0):
         resp = await llm.agenerate(msg)
         rsp = resp.generations[0][0].text
         try:
+            res = {}
             tmp = json.loads(rsp,strict=False)
-            tmp['stub'] = False
+            res['stub'] = False
+            res['name'] = criteria_name
+            res['band'] = int(tmp['band'])
+            res['comment'] = tmp['comment']
             exitFlag =1
         except Exception as e:
             OL_logger.error("GTP_response_json_converter: " + str(e))
             OL_logger.debug("GTP_response_json_converter: " + str(rsp))
             print(str(e)+". "+rsp)
-    return [key,tmp]
+    return [key,res,"criteria"]
 
 
-async def async_generate_improvement(llm, msg, key):
+async def async_generate_improvement(llm, msg, key, criteria_name):
     resp = await llm.agenerate(msg)
     tmp = resp.generations[0][0].text
 
-    resp = {"comment":tmp, "stub": False}
-    return [key,resp]
+    resp = {"comment":tmp, "stub": False, "name": criteria_name}
+    return [key,resp,"improvement"]
 # async def conversation_async(question,answer):
 #     model_name = "gpt-3.5-turbo"
 #     chat = ChatOpenAI(model_name=model_name)
@@ -254,7 +266,7 @@ async def WritingEstimationCompletition(question, answer,user,type):
     criterias = []
     for i in config['chat_criterias']:
         msg = prompt[i][2][0].format(input_criteria=prompt[i][0],answer=answer,question=question,format=JsonFormat)
-        criterias.append(async_generate_criteria(llm, [msg], prompt[i][1]))
+        criterias.append(async_generate_criteria(llm, [msg], prompt[i][1],prompt[i][0]))
     for j in config['random_criterias']:
         criterias.append(async_generate_random_criteria(prompt[j][1]))
 
@@ -291,26 +303,31 @@ async def WritingEstimationChat(question, answer,user,type):
     criterias = []
     for i in config['chat_criterias']:
         msg = prompt[i][2].format_prompt(input_criteria=prompt[i][0], answer=answer, question=question, format=JsonFormat).to_messages()
-        criterias.append(async_generate_criteria(llm, [msg], prompt[i][1]))
+        criterias.append(async_generate_criteria(llm, [msg], prompt[i][1],prompt[i][0]))
         #criterias.append(async_generate_random_criteria(prompt[i][1]))
     for j in config['random_criterias']:
-        criterias.append(async_generate_random_criteria(prompt[j][1]))
+        criterias.append(async_generate_random_criteria(prompt[j][1],prompt[j][0]))
 
     if config["improvements"] == False:
         for k in range(len(Improvements)):
-            criterias.append(async_generate_random_improvement(Improvements[k][1]))
+            criterias.append(async_generate_random_improvement(Improvements[k][1],Improvements[k][0]))
     else:
         for k in range(len(Improvements)):
             msg = Improvements[k][2].format_prompt(input_criteria=Improvements[k][0], answer=answer).to_messages()
-            criterias.append(async_generate_improvement(llm, [msg], Improvements[k][1]))
+            criterias.append(async_generate_improvement(llm, [msg], Improvements[k][1],Improvements[k][0]))
 
     done = await asyncio.gather(*criterias)
     response = {}
+    critera_result = {}
+    improvement_result = {}
     for value in done:
-        print(value[1])
-        response[value[0]] = value[1]
+        if (value[2] == "improvement"):
+            improvement_result[value[0]] = value[1]
+        else:
+            critera_result[value[0]] = value[1]
+    response['recommendations'] = improvement_result
+    response['estimations'] = critera_result
     response['level'] = config['level']
-    response['improvements'] = config['improvements']
     print(response)
     return response
 
