@@ -16,7 +16,7 @@ def updateUserLevelAfterPurchase(email, amount, period_start, period_end):
             doc = users_collection.document(u.id)  # doc is DocumentReference
             field_updates = {"level": level, "period_start": period_start, "period_end": period_end}
             doc.update(field_updates)
-            OL_logger.info("[updateUserLevelAfterPurchase]. user email: "+email+". purchase: "+ str(amount)+". updating OK")
+            OL_logger.info("[updateUserLevelAfterPurchase]. user email: "+email+". purchase: "+ str(amount)+". updating OK. Period_start="+str(period_start)+". Period_end="+str(period_end))
     except Exception as e:
         OL_logger.error("[updateUserLevelAfterPurchase]. can't update user level after purchase "+ e)
 
