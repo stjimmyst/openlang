@@ -4,7 +4,7 @@ from ollogger import OL_logger
 from olfirestore import OL_firestore
 
 def updateUserLevelAfterPurchase(email, amount, period_start, period_end):
-    OL_logger.info("[updateUserLevelAfterPurchase]. user email: "+email+". purchase: "+ str(amount)+". updating....")
+    OL_logger.debug("[updateUserLevelAfterPurchase]. user email: "+email+". purchase: "+ str(amount)+". updating....")
     if (amount==payments.IntermediatePrize):
         level=2
     elif (amount==payments.AdvancedPrize):
@@ -17,8 +17,8 @@ def updateUserLevelAfterPurchase(email, amount, period_start, period_end):
             field_updates = {"level": level, "period_start": period_start, "period_end": period_end}
             doc.update(field_updates)
             OL_logger.info("[updateUserLevelAfterPurchase]. user email: "+email+". purchase: "+ str(amount)+". updating OK")
-    except:
-        OL_logger.error("can't update user level after purchase")
+    except Exception as e:
+        OL_logger.error("[updateUserLevelAfterPurchase]. can't update user level after purchase "+ e)
 
 
 
