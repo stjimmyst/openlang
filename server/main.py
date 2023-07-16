@@ -140,7 +140,7 @@ async def WritingEstimationRoute():
     user = request.get_json()['user']
     request_uuid = str(uuid.uuid4())
     res = await gpt.WritingEstimationChat(question, answer, user, WritingType)
-    tmp = {'question': question, 'results': res}
+    tmp = {'question': question, 'results': res, 'answer': answer}
     asyncio.create_task(OLSaveHistory(user, WritingType, tmp, request_uuid))
     return tmp
 
