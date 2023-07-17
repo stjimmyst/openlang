@@ -6,7 +6,7 @@ from olfirestore import OL_firestore
 def updateUserLevelAfterPurchase(email, amount, period_start, period_end):
     OL_logger.debug("[updateUserLevelAfterPurchase]. user email: "+email+". purchase: "+ str(amount)+". updating....")
     if (amount==payments.IntermediatePrize):
-        level=2
+        level=3
     elif (amount==payments.AdvancedPrize):
         level = 3
     try:
