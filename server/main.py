@@ -208,7 +208,8 @@ def webhook():
         OL_logger.error("[PAYMENT] ")
         print("[PAYMENT]" + str(payment_intent))
         user_email = payment_intent.get('customer_email')
-        product_price = payment_intent.get('amount_paid', -1)
+        # product_price = payment_intent.get('amount_paid', -1)
+        product_price=1499
         period = event['data']['object']['lines']['data'][0]['period']
         period_start = period.get("start")
         period_end = period.get("end")
