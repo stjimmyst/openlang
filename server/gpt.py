@@ -30,14 +30,19 @@ StubText = "This is example of response which is not related to your task. Plase
 #StubText = "sdfsdfsdf"
 JsonFormat = '("band","comment")'
 Improvements = [
-    ["Errors and Grammatics","errors",ChatPromptTemplate.from_messages([
+    ["Mistakes and corrections","errors",ChatPromptTemplate.from_messages([
         SystemMessagePromptTemplate.from_template("You are helpful assistant. Analyze human writing in English and find errors with grammatical and tenses. Provide list of these errors with rules and explanations. Don't do any corrections and don't return human writing. Find at least 5 mistakes."),
+        HumanMessagePromptTemplate.from_template("\n{answer}")
+    ])],
+    ["Grammar rules", "grammar", ChatPromptTemplate.from_messages([
+        SystemMessagePromptTemplate.from_template(
+            "You are English grammar guru. Check the writing for mistakes and provide a list of related grammar rules with their names. Do not rewrite user text. return only the list of grammar rules (no more than 8). "),
         HumanMessagePromptTemplate.from_template("\n{answer}")
     ])],
     ["Improvement","selfimprovements",ChatPromptTemplate.from_messages([
         SystemMessagePromptTemplate.from_template("You are helpful assistant. Analyze human IELTS writing in English and provide list of paraphrasing and changes in sentences to improve writing."),
         HumanMessagePromptTemplate.from_template("\n{answer}")
-    ])]
+    ])],
 ]
 
 IeltsSpeakingTask1CriteriaChat = [
