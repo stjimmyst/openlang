@@ -83,6 +83,44 @@ IeltsWritingTask1CriteriaChat = [
     ])],
 ]
 
+CelpipWritingTask1CriteriaChat = [
+    ["Content/Coherence","ta",ChatPromptTemplate.from_messages([
+        SystemMessagePromptTemplate.from_template("You are CELPIP Writing examiner who estimate RESPONSE with scores 1 to 12 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
+        HumanMessagePromptTemplate.from_template("TASK:\n{question}\nRESPONSE:\n{answer}")
+    ])],
+    ["Vocabulary","cc",ChatPromptTemplate.from_messages([
+        SystemMessagePromptTemplate.from_template("You are CELPIP Writing examiner who estimate RESPONSE with scores 1 to 12 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
+        HumanMessagePromptTemplate.from_template("RESPONSE:\n{answer}")
+    ])],
+    ["Readability", "gra", ChatPromptTemplate.from_messages([
+        SystemMessagePromptTemplate.from_template("You are CELPIP Writing examiner who estimate RESPONSE with scores 1 to 12 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
+        HumanMessagePromptTemplate.from_template("RESPONSE:\n{answer}")
+    ])],
+    ["Task Fulfillment", "lr", ChatPromptTemplate.from_messages([
+        SystemMessagePromptTemplate.from_template("You are CELPIP Writing examiner who estimate RESPONSE with scores 1 to 12 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
+        HumanMessagePromptTemplate.from_template("RESPONSE:\n{answer}")
+    ])],
+]
+
+CelpipSpeakingTask1CriteriaChat = [
+    ["Content/Coherence","ta",ChatPromptTemplate.from_messages([
+        SystemMessagePromptTemplate.from_template("You are CELPIP Writing examiner who estimate RESPONSE with scores 1 to 12 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
+        HumanMessagePromptTemplate.from_template("TASK:\n{question}\nRESPONSE:\n{answer}")
+    ])],
+    ["Vocabulary","cc",ChatPromptTemplate.from_messages([
+        SystemMessagePromptTemplate.from_template("You are CELPIP Writing examiner who estimate RESPONSE with scores 1 to 12 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
+        HumanMessagePromptTemplate.from_template("RESPONSE:\n{answer}")
+    ])],
+    ["Listenability", "gra", ChatPromptTemplate.from_messages([
+        SystemMessagePromptTemplate.from_template("You are CELPIP Writing examiner who estimate RESPONSE with scores 1 to 12 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
+        HumanMessagePromptTemplate.from_template("RESPONSE:\n{answer}")
+    ])],
+    ["Task Fulfillment", "lr", ChatPromptTemplate.from_messages([
+        SystemMessagePromptTemplate.from_template("You are CELPIP Writing examiner who estimate RESPONSE with scores 1 to 12 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
+        HumanMessagePromptTemplate.from_template("RESPONSE:\n{answer}")
+    ])],
+]
+
 
 IeltsWritingTask1Criteria = [
     ["Task Achievement","ta",[
@@ -298,13 +336,20 @@ async def WritingEstimationCompletition(question, answer,user,type):
     return response
 
 
-async def WritingEstimationChat(question, answer,user,type):
+async def WritingEstimationChat(question, answer,user,type,test_type):
     config = GenerateConfigForUser(user,"chat")
     llm = ChatOpenAI(model_name=config['model_name'], max_tokens=config['max_tokens'], temperature=config['temperature'])
-    if (type == WritingType):
-        prompt = IeltsWritingTask1CriteriaChat
+    if (test_type == IeltsType):
+        if (type == WritingType):
+            prompt = IeltsWritingTask1CriteriaChat
+        else:
+            prompt = IeltsSpeakingTask1CriteriaChat
     else:
-        prompt = IeltsSpeakingTask1CriteriaChat
+        if (type == WritingType):
+            prompt = CelpipWritingTask1CriteriaChat
+        else:
+            prompt = CelpipSpeakingTask1CriteriaChat
+
     criterias = []
     for i in config['chat_criterias']:
         msg = prompt[i][2].format_prompt(input_criteria=prompt[i][0], answer=answer, question=question, format=JsonFormat).to_messages()

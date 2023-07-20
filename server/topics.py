@@ -20,14 +20,14 @@ asking for information and advice. Write a letter to your friend, in your letter
 Write at least 150 words. 
     """
 
-IeltsSpeakingCollection = "ielts_speaking"
-IeltsWritingCollection = "ielts_writing"
-def getRandomTopic(type):
-    if (type==SpeakingType):
-        collection=IeltsSpeakingCollection
+SpeakingCollection = "speaking"
+WritingCollection = "writing"
+def getRandomTopic(task_type,test_type):
+    if (task_type==SpeakingType):
+        collection=test_type+"_"+SpeakingCollection
         topic = defaultSpeakingTopic;
     else:
-        collection=IeltsWritingCollection
+        collection=test_type+"_"+WritingCollection
         topic = defaultWritingTopic;
 
     number = 0

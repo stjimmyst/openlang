@@ -116,15 +116,12 @@ def get_current_time():
     return {'time': time.time()}
 
 
+
 @app.route('/getRandomTopic')
 def route_getRandomTopic():
-    res = topics.getRandomTopic(WritingType)
-    return {'topic': res}
-
-
-@app.route('/getRandomSpeakingTopic')
-def route_getRandomSpeakingTopic():
-    res = topics.getRandomTopic(SpeakingType)
+    test_type = request.args['test_type']
+    task_type = request.args['task_type']
+    res = topics.getRandomTopic(task_type,test_type)
     return {'topic': res}
 
 
@@ -138,10 +135,11 @@ async def WritingEstimationRoute():
     question = request.get_json()['question']
     answer = request.get_json()['answer']
     user = request.get_json()['user']
+    test_type = request.get_json()['test']
     request_uuid = str(uuid.uuid4())
-    res = await gpt.WritingEstimationChat(question, answer, user, WritingType)
-    tmp = {'question': question, 'results': res, 'answer': answer}
-    asyncio.create_task(OLSaveHistory(user, WritingType, tmp, request_uuid))
+    res = await gpt.WritingEstimationChat(question, answer, user, WritingType,test_type)
+    tmp = {'question': question, 'results': res, 'answer': answer, 'test_type': test_type}
+    asyncio.create_task(OLSaveHistory(user, WritingType, tmp, request_uuid,test_type))
     return tmp
 
 
@@ -153,13 +151,14 @@ async def SpeakingEstimationRoute():
     params = json.loads(request.form.get('params'));
     question = params['question']
     user = params['user']
+    test_type = params['test']
     request_uuid = str(uuid.uuid4())
     f.save(secure_filename(request_uuid + ".mp3"))
     answer = gpt.voiceToText(request_uuid + ".mp3")
-    res = await gpt.WritingEstimationChat(question, answer, user, SpeakingType)
-    tmp = {'question': question, 'transcription': answer, 'results': res}
-    asyncio.create_task(OLSaveHistory(user, SpeakingType, tmp, request_uuid))
-    asyncio.create_task(OLSaveAudio(user, request_uuid))
+    res = await gpt.WritingEstimationChat(question, answer, user, SpeakingType,test_type)
+    tmp = {'question': question, 'transcription': answer, 'results': res, 'test_type':test_type}
+    asyncio.create_task(OLSaveHistory(user, SpeakingType, tmp, request_uuid,test_type))
+    asyncio.create_task(OLSaveAudio(user, request_uuid,test_type))
     return tmp
 
 
