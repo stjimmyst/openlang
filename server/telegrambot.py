@@ -7,6 +7,7 @@ import gpt
 import const
 import asyncio
 import time
+import user
 from olfirestore import OLSaveHistory
 from olfilestorage import OLSaveAudio
 from telebot import types
@@ -84,6 +85,9 @@ To see detailed results visit our website: <a href="{link}"><b>https://openlang.
 @bot.message_handler(commands=['start'])
 async def send_welcome(message):
     chat_id = message.chat.id
+    uid = getuserid(message)
+    profile = {"id": "telegram_"+str(uid), "source": "OpenLangChatBot"}
+    user.loginUser(profile)
     await bot.send_message(chat_id,parse_mode="HTML",text=welcomeText(message))
 
 @bot.message_handler(commands=['writing'])
