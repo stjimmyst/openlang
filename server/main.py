@@ -16,6 +16,7 @@ import topics
 from ollogger import OL_logger, RequestLog
 from olfirestore import OLSaveHistory
 from olfilestorage import OLSaveAudio
+import telegrambot
 from const import *
 
 app = Flask(__name__)
@@ -233,4 +234,5 @@ def webhook():
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     OL_logger.info("Flask server started")
+    asyncio.run(telegrambot.bot.polling())
     app.run(debug=True, host='0.0.0.0', port=port)

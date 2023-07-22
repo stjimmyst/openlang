@@ -54,11 +54,11 @@ IeltsSpeakingTask1CriteriaChat = [
         SystemMessagePromptTemplate.from_template("You are IELTS Speaking examiner who estimate RESPONSE with scores 1 to 9 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
         HumanMessagePromptTemplate.from_template("RESPONSE:\n{answer}")
     ])],
-    ["Grammatical Range and Accuracy", "gra", ChatPromptTemplate.from_messages([
+    ["Pronunciation", "p", ChatPromptTemplate.from_messages([
         SystemMessagePromptTemplate.from_template("You are IELTS Speaking examiner who estimate RESPONSE with scores 1 to 9 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
         HumanMessagePromptTemplate.from_template("RESPONSE:\n{answer}")
     ])],
-    ["Pronunciation", "p", ChatPromptTemplate.from_messages([
+["Grammatical Range and Accuracy", "gra", ChatPromptTemplate.from_messages([
         SystemMessagePromptTemplate.from_template("You are IELTS Speaking examiner who estimate RESPONSE with scores 1 to 9 by one criteria {input_criteria}. Your response should be only in json format {format} with valid schema. Comment should contain details with at least 150 words"),
         HumanMessagePromptTemplate.from_template("RESPONSE:\n{answer}")
     ])],
