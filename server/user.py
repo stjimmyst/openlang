@@ -39,7 +39,7 @@ def getUserLevel(username):
             if (current_dt > period_end):
                 tmp = coll.document(doc.id)
                 tmp.update({"level": 1})
-                OL_logger.debug("Subscription expired: setting level=0 for user "+username)
+                OL_logger.debug("Subscription expired: setting level=1 for user "+username)
                 level = 1
             else:
                 level = doc.get("level")

@@ -120,11 +120,7 @@ async def telegramLogin(message: telebot.types.Message):
     bot_name = await bot.get_me()
     inp["source"] = bot_name.to_dict()
     user.loginUser(inp)
-@bot.message_handler(commands=['testmsg'])
-async def check(message: telebot.types.Message):
-    chat_id = message.chat.id
-    asyncio.create_task(telegramLogin(message))
-    await bot.send_message(chat_id, parse_mode="HTML", text="fdfdf")
+
 
 
 @bot.message_handler(content_types=['voice'])
