@@ -107,7 +107,7 @@ async def send_welcome(message):
     chat_id = message.chat.id
     if (len(user_status) != 0):
         stat[getuserid(message)]['activity'] = 'speaking'
-        outp = "You are going to estimate you IELTS Speaking. Please record your voice use your microphone"
+        outp = "You are going to estimate you IELTS Speaking. Please record your voice."
     else:
         outp = "Your session expired. Please use <b>/start</b> command again"
     await bot.send_message(chat_id, parse_mode="HTML", text=outp)
@@ -157,7 +157,7 @@ async def voice_processing(message):
 
             asyncio.create_task(OLSaveAudio("telegram_" + str(id), fn, "ielts"))
         else:
-            outp = "Please provide text message when you want to estimate you IELTS Writing."
+            outp = "Please provide text message when you want to estimate you IELTS Writing. Just type it and send to me."
             stat[id] = {"activity": "ready", "dt": 0}
     await bot.send_message(chat_id, parse_mode="HTML", text=outp)
 
