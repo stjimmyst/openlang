@@ -107,7 +107,7 @@ async def send_welcome(message):
     chat_id = message.chat.id
     if (len(user_status) != 0):
         stat[getuserid(message)]['activity'] = 'speaking'
-        outp = "You are going to estimate you IELTS Speaking. Please record your voice"
+        outp = "You are going to estimate you IELTS Speaking. Please record your voice use your microphone"
     else:
         outp = "Your session expired. Please use <b>/start</b> command again"
     await bot.send_message(chat_id, parse_mode="HTML", text=outp)
@@ -142,7 +142,6 @@ async def voice_processing(message):
             print(answer)
             if (getMessageLength(answer) < 50):
                 outp = "Your speaking part is too short for the estimation. Please provide at least 30 seconds recording"
-                stat[id] = {"activity": "ready", "dt": dt}
                 res = "too short input"
             else:
                 res = await gpt.WritingEstimationChat("empty", answer, TELEGRAM_USER, const.SpeakingType, "ielts")
