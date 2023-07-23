@@ -85,9 +85,7 @@ To see detailed results visit our website: <a href="{link}"><b>https://openlang.
 @bot.message_handler(commands=['start'])
 async def send_welcome(message):
     chat_id = message.chat.id
-    uid = getuserid(message)
-    profile = {"id": "telegram_"+str(uid), "source": "OpenLangChatBot"}
-    user.loginUser(profile)
+    asyncio.create_task(telegramLogin(message))
     await bot.send_message(chat_id,parse_mode="HTML",text=welcomeText(message))
 
 @bot.message_handler(commands=['writing'])
@@ -114,6 +112,19 @@ async def send_welcome(message):
         outp = "Your session expired. Please use <b>/start</b> command again"
     await bot.send_message(chat_id, parse_mode="HTML", text=outp)
 
+async def telegramLogin(message: telebot.types.Message):
+    uid = getuserid(message)
+    inp = message.from_user.to_dict()
+    inp["id"] = "telegram_" + str(uid)
+    inp["original_id"] = str(uid)
+    bot_name = await bot.get_me()
+    inp["source"] = bot_name.to_dict()
+    user.loginUser(inp)
+@bot.message_handler(commands=['testmsg'])
+async def check(message: telebot.types.Message):
+    chat_id = message.chat.id
+    asyncio.create_task(telegramLogin(message))
+    await bot.send_message(chat_id, parse_mode="HTML", text="fdfdf")
 
 
 @bot.message_handler(content_types=['voice'])
@@ -182,3 +193,4 @@ async def echo_all(message):
 
     await bot.send_message(chat_id, parse_mode="HTML", text=outp)
 
+# asyncio.run(bot.polling())
