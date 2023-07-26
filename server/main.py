@@ -234,5 +234,5 @@ def webhook():
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     OL_logger.info("Flask server started")
-    asyncio.run(telegrambot.bot.polling())
+    # asyncio.run(telegrambot.bot.polling())
     app.run(debug=True, host='0.0.0.0', port=port)
