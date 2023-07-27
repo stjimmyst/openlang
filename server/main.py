@@ -159,12 +159,8 @@ async def SpeakingEstimationRoute():
     request_uuid = str(uuid.uuid4())
     f.save(secure_filename(request_uuid + ".mp3"))
     answer = gpt.voiceToText(request_uuid + ".mp3")
-    answer_length = len(str(answer).split(" "))
-    if (answer_length < 30):
-        tmp = {'question': question, 'transcription': answer, 'results': "Your recording is too short. Please provide at least 30-seconds long recoding and try again.", 'test_type':test_type, "is_enough": False}
-    else:
-        res = await gpt.WritingEstimationChat(question, answer, user, SpeakingType,test_type)
-        tmp = {'question': question, 'transcription': answer, 'results': res, 'test_type':test_type,"is_enough": True}
+    res = await gpt.WritingEstimationChat(question, answer, user, SpeakingType, test_type)
+    tmp = {'question': question, 'transcription': answer, 'results': res, 'test_type': test_type}
     asyncio.create_task(OLSaveHistory(user, SpeakingType, tmp, request_uuid,test_type))
     asyncio.create_task(OLSaveAudio(user, request_uuid,test_type))
     return tmp

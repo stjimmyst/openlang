@@ -27,6 +27,7 @@ from langchain.prompts.chat import (
 )
 import user
 StubText = "This is example of response which is not related to your task. Plase choose the best price plan for your goals."
+NotEnoughText = "Your answer is too short for the estimation. Please provide at least 50 words and try again."
 #StubText = "sdfsdfsdf"
 JsonFormat = '("band","comment")'
 Improvements = [
@@ -153,7 +154,14 @@ IeltsSpeakingTask1Criteria = [
 
 ]
 GlobalNumberOfCriteria = len(IeltsWritingTask1Criteria)
-def GenerateConfigForUser(inputuser,model):
+def isEnoughWordCount(answer):
+    tmp = len(str(answer).split(" "))
+    if tmp < 50 :
+        return False
+    else:
+        return True
+
+def GenerateConfigForUser(inputuser,model,enough):
     level =  user.getUserLevel(inputuser)
     if (model =="completition"):
         model_name = "text-davinci-003"
@@ -164,27 +172,35 @@ def GenerateConfigForUser(inputuser,model):
     chat_criterias = []
     improvements = False;
     #unauthorized
-    if (level == 0):
-        max_tokens=300
-        #rnd = random.randint(0,GlobalNumberOfCriteria-1)
-        random_criterias=[0,1,2,3]
-        chat_criterias = []
-    # authorized free
-    elif (level==1):
-        max_tokens=300
-        random_criterias = [0, 1, 2]
-        chat_criterias = [3]
+    if (enough):
+        is_enough = True
+        if (level == 0):
+            max_tokens = 300
+            # rnd = random.randint(0,GlobalNumberOfCriteria-1)
+            random_criterias = [0, 1, 2, 3]
+            chat_criterias = []
+        # authorized free
+        elif (level == 1):
+            max_tokens = 300
+            random_criterias = [0, 1, 2]
+            chat_criterias = [3]
 
-    # basic paid
-    elif (level == 2):
-        max_tokens = 300
-        random_criterias = []
-        chat_criterias = [0, 1, 2, 3]
+        # basic paid
+        elif (level == 2):
+            max_tokens = 300
+            random_criterias = []
+            chat_criterias = [0, 1, 2, 3]
+        else:
+            max_tokens = 300
+            chat_criterias = random_criterias
+            random_criterias = []
+            improvements = True
     else:
-        max_tokens = 300
-        chat_criterias = random_criterias
-        random_criterias = []
-        improvements = True
+        max_tokens = 0;
+        chat_criterias = []
+        random_criterias = [0, 1, 2, 3]
+        improvements = False
+        is_enough = False
 
     resp = {
         'level': level,
@@ -193,7 +209,8 @@ def GenerateConfigForUser(inputuser,model):
         'max_tokens': max_tokens,
         'random_criterias': random_criterias,
         'chat_criterias': chat_criterias,
-        'improvements': improvements
+        'improvements': improvements,
+        'is_enough': is_enough
     }
     print(inputuser)
     print(resp)
@@ -238,12 +255,28 @@ def voiceToText(filename):
         print(tmp)
         return tmp
 
-async def async_generate_random_improvement(key, criteria_name):
-    tmp = {"comment": StubText, "stub":True, "name": criteria_name}
+async def async_generate_random_improvement(key, criteria_name,is_enough):
+    if (is_enough):
+        stb_text = StubText
+        band = random.randint(1,9)
+        stub = True
+    else:
+        stb_text = NotEnoughText
+        band = 1
+        stub = False
+    tmp = {"comment": stb_text, "stub":stub, "name": criteria_name}
     print(tmp)
     return [key,tmp,"improvement"]
-async def async_generate_random_criteria(key, criteria_name):
-    tmp = {"band": random.randint(1,9), "comment": StubText, "stub": True, "name": criteria_name}
+async def async_generate_random_criteria(key, criteria_name,is_enough):
+    if (is_enough):
+        stb_text = StubText
+        band = random.randint(1,9)
+        stub = True
+    else:
+        stb_text = NotEnoughText
+        band = 1
+        stub = False
+    tmp = {"band": band, "comment": stb_text, "stub": stub, "name": criteria_name}
     print(tmp)
     return [key,tmp,"criteria"]
 
@@ -300,7 +333,8 @@ async def async_generate_improvement(llm, msg, key, criteria_name):
 #     return resp
 
 async def WritingEstimationCompletition(question, answer,user,type):
-    config = GenerateConfigForUser(user,"completition")
+    is_enough = isEnoughWordCount(answer)
+    config = GenerateConfigForUser(user,"completition",isEnoughWordCount(answer))
     llm = OpenAI(model_name=config['model_name'], max_tokens=config['max_tokens'],temperature=config['temperature'])
     if (type==WritingType):
         prompt = IeltsWritingTask1Criteria
@@ -311,11 +345,11 @@ async def WritingEstimationCompletition(question, answer,user,type):
         msg = prompt[i][2][0].format(input_criteria=prompt[i][0],answer=answer,question=question,format=JsonFormat)
         criterias.append(async_generate_criteria(llm, [msg], prompt[i][1],prompt[i][0]))
     for j in config['random_criterias']:
-        criterias.append(async_generate_random_criteria(prompt[j][1]))
+        criterias.append(async_generate_random_criteria(prompt[j][1],is_enough))
 
     if config["improvements"] == False:
         for k in range(len(Improvements)):
-            criterias.append(async_generate_random_improvement(Improvements[k][1]))
+            criterias.append(async_generate_random_improvement(Improvements[k][1],is_enough))
     else:
         for k in range(len(Improvements)):
             msg = Improvements[k][2][0].format(answer=answer)
@@ -337,7 +371,8 @@ async def WritingEstimationCompletition(question, answer,user,type):
 
 
 async def WritingEstimationChat(question, answer,user,type,test_type):
-    config = GenerateConfigForUser(user,"chat")
+    is_enough = isEnoughWordCount(answer)
+    config = GenerateConfigForUser(user,"chat",is_enough)
     llm = ChatOpenAI(model_name=config['model_name'], max_tokens=config['max_tokens'], temperature=config['temperature'])
     if (test_type == IeltsType):
         if (type == WritingType):
@@ -356,11 +391,11 @@ async def WritingEstimationChat(question, answer,user,type,test_type):
         criterias.append(async_generate_criteria(llm, [msg], prompt[i][1],prompt[i][0]))
         #criterias.append(async_generate_random_criteria(prompt[i][1]))
     for j in config['random_criterias']:
-        criterias.append(async_generate_random_criteria(prompt[j][1],prompt[j][0]))
+        criterias.append(async_generate_random_criteria(prompt[j][1],prompt[j][0],is_enough))
 
     if config["improvements"] == False:
         for k in range(len(Improvements)):
-            criterias.append(async_generate_random_improvement(Improvements[k][1],Improvements[k][0]))
+            criterias.append(async_generate_random_improvement(Improvements[k][1],Improvements[k][0],is_enough))
     else:
         for k in range(len(Improvements)):
             msg = Improvements[k][2].format_prompt(input_criteria=Improvements[k][0], answer=answer).to_messages()
