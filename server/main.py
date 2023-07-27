@@ -16,7 +16,6 @@ import topics
 from ollogger import OL_logger, RequestLog
 from olfirestore import OLSaveHistory
 from olfilestorage import OLSaveAudio
-import telegrambot
 from const import *
 
 app = Flask(__name__)
@@ -133,6 +132,8 @@ def default_route():
 
 @app.route('/WritingEstimation', methods=["GET", "POST"])
 async def WritingEstimationRoute():
+    if request.get_json()['question'] is None:
+        return {'failed': 'no question field'}
     question = request.get_json()['question']
     answer = request.get_json()['answer']
     user = request.get_json()['user']
@@ -147,7 +148,9 @@ async def WritingEstimationRoute():
 @app.route("/SpeakingEstimation", methods=["GET", "POST"])
 async def SpeakingEstimationRoute():
     if request.files.get("file") is None:
-        return {'failed': 'OK'}
+        return {'failed': 'no file recieved'}
+    if request.form.get('params') is None:
+        return {'failed': 'no params josn'}
     f = request.files["file"]
     params = json.loads(request.form.get('params'));
     question = params['question']
@@ -156,8 +159,12 @@ async def SpeakingEstimationRoute():
     request_uuid = str(uuid.uuid4())
     f.save(secure_filename(request_uuid + ".mp3"))
     answer = gpt.voiceToText(request_uuid + ".mp3")
-    res = await gpt.WritingEstimationChat(question, answer, user, SpeakingType,test_type)
-    tmp = {'question': question, 'transcription': answer, 'results': res, 'test_type':test_type}
+    answer_length = len(str(answer).split(" "))
+    if (answer_length < 30):
+        tmp = {'question': question, 'transcription': answer, 'results': "Your recording is too short. Please provide at least 30-seconds long recoding and try again.", 'test_type':test_type, "is_enough": False}
+    else:
+        res = await gpt.WritingEstimationChat(question, answer, user, SpeakingType,test_type)
+        tmp = {'question': question, 'transcription': answer, 'results': res, 'test_type':test_type,"is_enough": True}
     asyncio.create_task(OLSaveHistory(user, SpeakingType, tmp, request_uuid,test_type))
     asyncio.create_task(OLSaveAudio(user, request_uuid,test_type))
     return tmp
@@ -234,5 +241,4 @@ def webhook():
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     OL_logger.info("Flask server started")
-    # asyncio.run(telegrambot.bot.polling())
     app.run(debug=True, host='0.0.0.0', port=port)
