@@ -153,6 +153,17 @@ IeltsSpeakingTask1Criteria = [
     ]]
 
 ]
+
+# Reading explanation chart
+IeltsReadingExplainJsonFormat = '[("question_id":number, "explanation":string)]'
+IeltsReadingExplainAnswer = ChatPromptTemplate.from_messages([
+        SystemMessagePromptTemplate.from_template("Read the input_text and provide clear and detailed ANSWER explanation for each QUESTION for TASK with details. Provide your response in JSON format {format}"),
+        HumanMessagePromptTemplate.from_template("{input}")
+    ])
+
+
+
+
 GlobalNumberOfCriteria = len(IeltsWritingTask1Criteria)
 def isEnoughWordCount(answer):
     tmp = len(str(answer).split(" "))
@@ -415,4 +426,37 @@ async def WritingEstimationChat(question, answer,user,type,test_type):
     response['level'] = config['level']
     print(response)
     return response
+
+async def IeltsReadingQuestionsExplanation(content):
+    llm = ChatOpenAI(model_name="gpt-3.5-turbo", max_tokens=1000,temperature=0.5)
+    # print("input content = "+json.dumps(content))
+    agg_questions = []
+    res ={}
+    res['input_text'] =content['content_text']
+    for question in content['questions']:
+        tmp_question = {}
+        tmp_question['task'] = question['question_text']
+        tmp_list = []
+
+        for item in question['items']:
+            tmp = {}
+            tmp['question'] = item['item_text']
+            tmp["id"] = item['item_number']
+            if (question['type']['id']=="select") :
+                tmp['answer'] = item['item_values'][item['answer']]
+            else:
+                tmp['answer'] = item['answer']
+            tmp_list.append(tmp)
+        tmp_question["items"] = tmp_list
+        agg_questions.append(tmp_question)
+    res['questions'] = agg_questions
+    txt_input = json.dumps(res)
+    print("json config = "+json.dumps(res))
+    msg = IeltsReadingExplainAnswer.format_prompt(input=txt_input, format=IeltsReadingExplainJsonFormat).to_messages()
+    resp = await llm.agenerate([msg])
+    rsp = resp.generations[0][0].text
+    print(rsp)
+    tmp = json.loads(rsp, strict=False)
+    return tmp
+
 

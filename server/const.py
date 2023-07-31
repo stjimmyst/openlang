@@ -1,4 +1,5 @@
 SpeakingType = "speaking"
 WritingType = "writing"
+ReadingType = "reading"
 IeltsType = "ielts"
 CelpipType = "celpip"

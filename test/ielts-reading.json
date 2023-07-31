@@ -1,0 +1,536 @@
+{
+  "reading_type": "ielts",
+  "exam_id": "1",
+  "sections": [
+    {
+      "section_id": "Section1 UUID",
+      "section_number": "1",
+      "section_description": "questions 1-13",
+      "contents": [
+        {
+          "content_id": "content_uuid1",
+          "content_text": "<h1><strong>The Earth</strong></h1><p><strong>(A)</strong> The Earth is the third planet from the Sun and it is the only planet known to have life on it. The Earth formed around 4.5 billion years ago. It is one of four rocky planets on the inside of the Solar System. The other three are Mercury, Venus, and Mars.</p><p><strong>(B)</strong> The large mass of the Sun makes the Earth move around it, just as the mass of the Earth makes the Moon move around it. The Earth also turns round in space, so different parts face the Sun at different times. The Earth goes around the Sun once (one \"year\") for every 365¼ times it turns all the way around (one \"day\").</p><p><strong>(C)</strong> The Moon goes around the Earth about every 27⅓ days, and reflects light from the Sun. As the Earth goes round the Sun at the same time, the changing light of the Moon takes about 29½ days to go from dark to bright to dark again. That is where the idea of \"month\" came from. However, now most months have 30 or 31 days so they fit into one year.</p><p><strong>(D)</strong> The Earth is the only planet in our Solar System that has a large amount of liquid water. About 71% of the surface of the Earth is covered by oceans. Because of this, it is sometimes called the \"Blue Planet\".</p><p><strong>(E)</strong> Because of its water, the Earth is home to millions of species of plants and animals. The things that live on Earth have changed its surface greatly. For example, early cyanobacteria changed the air and gave it oxygen. The living part of the Earth's surface is called the \"biosphere\". </p><p><strong>(F)</strong> The Earth is part of the eight planets and many thousands of small bodies that move around the Sun as its Solar System. The Solar System is moving through the Orion Arm of the Milky Way Galaxy now, and will be for about the next 10,000 years.</p><p><strong>(G)</strong> The Earth is generally 150,000,000 kilometers or 93,000,000 miles away from the Sun (this distance is named an \"Astronomical Unit\"). The Earth moves along its way at an average speed of about 30 km or 19 mi a second. The Earth turns all the way around about 365¼ times in the time it takes for the Earth to go all the way around the Sun. To make up this extra bit of a day every year, an additional day is used every four years. This is named a \"leap year\".</p><p><strong>(H)</strong> The Moon goes around the Earth at an average distance of 400,000 kilometers (250,000 mi). It is locked to Earth, so that it always has the same half facing the Earth; the other half is called the \"dark side of the Moon\". It takes about 27⅓ days for the Moon to go all the way around the Earth but, because the Earth is moving around the Sun at the same time, it takes about 29½ days for the Moon to go from dark to bright to dark again. This is where the word \"month\" came from, even though most months now have 30 or 31 days.</p>",
+          "questions": [
+            {
+              "question_text": "The text has 8 paragraphs. Which paragraphs mentiones the following?",
+              "type": {
+                "id": "matching"
+              },
+              "items": [
+                {
+                  "item_values": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H"
+                  ],
+                  "item_number": 1,
+                  "item_uuid": "uuid1",
+                  "item_text": "Earth’s natural satellite",
+                  "answer": "H"
+                },
+                {
+                  "item_values": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H"
+                  ],
+                  "item_number": 2,
+                  "item_uuid": "uuid2",
+                  "item_text": "Distance between Earth and Sun",
+                  "answer": "G"
+                },
+                {
+                  "item_values": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H"
+                  ],
+                  "item_number": 3,
+                  "item_uuid": "uuid3",
+                  "item_text": "General information about Earth",
+                  "answer": "A"
+                },
+                {
+                  "item_values": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H"
+                  ],
+                  "item_number": 4,
+                  "item_uuid": "uuid4",
+                  "item_text": "The Solar System",
+                  "answer": "F"
+                },
+                {
+                  "item_values": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H"
+                  ],
+                  "item_number": 5,
+                  "item_uuid": "uuid5",
+                  "item_text": "Length of most moths",
+                  "answer": "C"
+                },
+                {
+                  "item_values": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H"
+                  ],
+                  "item_number": 6,
+                  "item_uuid": "uuid6",
+                  "item_text": "Another name for Earth",
+                  "answer": "D"
+                },
+                {
+                  "item_values": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H"
+                  ],
+                  "item_number": 7,
+                  "item_uuid": "uuid7",
+                  "item_text": "The living part of the Earth's surface",
+                  "answer": "E"
+                },
+                {
+                  "item_values": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H"
+                  ],
+                  "item_number": 8,
+                  "item_uuid": "uuid8",
+                  "item_text": "The movements of Earth around the Sun",
+                  "answer": "B"
+                }
+              ]
+            },
+            {
+              "question_text": "Complete the sentences below. Choose NO MORE THAN THREE WORDS from the text for each answer.",
+              "type": {
+                "id": "gap"
+              },
+              "items": [
+                {
+                  "item_number": 9,
+                  "item_uuid": "uuid9",
+                  "item_text": "Apart from Earth, other rocky planets in our Solar Systems are Venus, Mars and __question",
+                  "answer": "mercury"
+                },
+                {
+                  "item_number": 10,
+                  "item_uuid": "uuid10",
+                  "item_text": "Moon __question from the Sun on Earth.",
+                  "answer": "reflects light"
+                },
+                {
+                  "item_number": 11,
+                  "item_uuid": "uuid11",
+                  "item_text": "There are millions of __question of plants and animals that inhabit Earth.",
+                  "answer": "Species"
+                },
+                {
+                  "item_number": 12,
+                  "item_uuid": "uuid12",
+                  "item_text": "Now the Solar System is travelling through __question",
+                  "answer": "the orion arm"
+                },
+                {
+                  "item_number": 13,
+                  "item_uuid": "uuid13",
+                  "item_text": "The dark side of the Moon is the side, which __question faces Earth.",
+                  "answer": "never"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "section_id": "Section2 UUID",
+      "section_number": "2",
+      "section_description": "questions 14-28",
+      "contents": [
+        {
+          "content_id": "content_uuid2",
+          "content_text": "<p><strong>1. The Vitamin Shoppe</strong>: 1,946 part-time openings.  The Vitamin Shoppe is a New Jersey-based retailer of nutritional supplements. They also operate stores in Canada under the name &quot;VitaPath&quot;. The company provides approximately 8,000 different SKU's of supplements through its retail stores and over 20,000 different SKU's of supplements through its online retail websites.</p><p><strong>Employee Review: </strong>&quot;Good growth opportunities and stores opening all over the US all year 'round. Company based out of NJ, so more progressive policies on employment and benefits. Good vacation, health, and dental benefits. Payment is above average. Good policies on customer service interaction as well. Focus on Customer service vs. pushing products.&quot;</p><p><strong>2. Chipotle</strong>: 1,553 part-time openings. Chipotle is known for its use of organic meats throughout its more than 1,500 restaurants, which are located in 45 states. Since having been founded in 1993, the chain has since exploded and now counts some 37,000 employees. It is a pioneer in the &quot;fast casual&quot; dining movement.</p><p><strong>Employee Review:</strong> &quot;The people I work with are awesome and the food is good. It pays my bills and makes me laugh. The schedule is super flexible but it's a lot of work. If you're looking for something easy and laid back, keep looking.&quot;</p><p><strong>3. Advantage Sales &amp; Marketing</strong>: 1,742 part-time openings. Advantage Sales &amp; Marketing provides outsourced sales, merchandising, and marketing services to consumer goods and food product manufacturers and suppliers. Owning more than 65 offices in the US and Canada, ASM does merchandising for 1,200 clients -- including Johnson &amp; Johnson, Mars, Unilever, Energizer.</p><p><strong>Employee Review: </strong>&quot;Long lasting business, able to adapt to changes in market. Well-thought out schedule, and flexible time off for both vacation and illness.&quot;</p><p><strong>4. Universal Protection Service</strong>: 1,219 part-time openings. Universal Protection Service is one of the largest providers of security services in the U.S. They offer an expansive range of security solutions for airports, healthcare facilities, office buildings, and more.</p><p><strong>Employee Review: </strong>&quot;Good pay depending on where you work. Room for advancement based on availability. Better company than any other I have worked for in security.&quot;</p><p><strong>5. PSA Healthcare:</strong> 1,295 part-time openings PSA Healthcare, also known as Pediatric Services of America, provides comprehensive home health services through a branch of office across the United States. The company is headquartered in Atlanta, Ga.</p><p><strong>Employee Review:</strong> &quot;I love working one-on-one with the pediatric patient and their families. You have the time needed to give great compassionate care! Office staff and supervisors are very good with both employees and clients. There is a lot of flexibility with staffing. I never received grief for requesting a day off.&quot;</p>",
+          "questions": [
+            {
+              "question_text": "Choose the correct letter, A, B, C or D.",
+              "type": {
+                "id": "select"
+              },
+              "items": [
+                {
+                  "item_number": 14,
+                  "item_uuid": "uuid14",
+                  "item_text": "Which offer has the most part-time openings?",
+                  "item_values": {
+                    "A": "Chipotle",
+                    "B": "PSA Healthcare",
+                    "C": "The Vitamin Shoppe",
+                    "D": "Advantage Sales & Marketing"
+                  },
+                  "answer": "C"
+                },
+                {
+                  "item_number": 15,
+                  "item_uuid": "uuid15",
+                  "item_text": "Which of these companies operate both in USA and Canada?",
+                  "item_values": {
+                    "A": "The Vitamin Shoppe and Advantage Sales & Marketing",
+                    "B": "PSA Healthcare and Advantage Sales & Marketing",
+                    "C": "Chipotle and PSA Healthcare",
+                    "D": "PSA Healthcare and The Vitamin Shoppe"
+                  },
+                  "answer": "A"
+                },
+                {
+                  "item_number": 16,
+                  "item_uuid": "uuid16",
+                  "item_text": "Review of which company says that it is the best security company he/she worked for?",
+                  "item_values": {
+                    "A": "Chipotle",
+                    "B": "The Vitamin Shoppe",
+                    "C": "Universal Protection Service",
+                    "D": "PSA Healthcare"
+                  },
+                  "answer": "C"
+                },
+                {
+                  "item_number": 17,
+                  "item_uuid": "uuid17",
+                  "item_text": "Which company was founded in 1993?",
+                  "item_values": {
+                    "A": "The Vitamin Shoppe",
+                    "B": "Universal Protection Service",
+                    "C": "PSA Healthcare",
+                    "D": "Chipotle"
+                  },
+                  "answer": "D"
+                },
+                {
+                  "item_number": 18,
+                  "item_uuid": "uuid18",
+                  "item_text": "Main office of which company is situated in Atlanta?",
+                  "item_values": {
+                    "A": "The Vitamin Shoppe",
+                    "B": "PSA Healthcare",
+                    "C": "Chipotle",
+                    "D": "Advantage Sales & Marketing"
+                  },
+                  "answer": "B"
+                },
+                {
+                  "item_number": 19,
+                  "item_uuid": "uuid19",
+                  "item_text": "VitaPath is the other name of which company?",
+                  "item_values": {
+                    "A": "PSA Healthcare",
+                    "B": "Universal Protection Service",
+                    "C": "The Vitamin Shoppe",
+                    "D": "Advantage Sales & Marketing"
+                  },
+                  "answer": "C"
+                },
+                {
+                  "item_number": 20,
+                  "item_uuid": "uuid20",
+                  "item_text": "Which review doesn’t mention a comfortable timetable?",
+                  "item_values": {
+                    "A": "Chipotle",
+                    "B": "Advantage Sales & Marketing",
+                    "C": "The Vitamin Shoppe",
+                    "D": "PSA Healthcare"
+                  },
+                  "answer": "C"
+                },
+                {
+                  "item_number": 21,
+                  "item_uuid": "uuid21",
+                  "item_text": "Which company is described as a long lasting business?",
+                  "item_values": {
+                    "A": "PSA Healthcare",
+                    "B": "Advantage Sales & Marketing",
+                    "C": "Universal Protection Service",
+                    "D": "Chipotle"
+                  },
+                  "answer": "B"
+                },
+                {
+                  "item_number": 22,
+                  "item_uuid": "uuid22",
+                  "item_text": "Organic meat is used by what company?",
+                  "item_values": {
+                    "A": "Chipotle",
+                    "B": "The Vitamin Shoppe",
+                    "C": "Advantage Sales & Marketing",
+                    "D": "None of them"
+                  },
+                  "answer": "A"
+                }
+              ]
+            },
+            {
+              "question_text": "Do the following statements agree with the given information?",
+              "type": {
+                "id": "matching"
+              },
+              "items": [
+                {
+                  "item_number": 23,
+                  "item_uuid": "uuid23",
+                  "item_text": "The Vitamin Shoppe has an above average salary, according to the review.",
+                  "item_values": [
+                    "TRUE",
+                    "FALSE",
+                    "NOT GIVEN"
+                  ],
+                  "answer": "true"
+                },
+                {
+                  "item_number": 24,
+                  "item_uuid": "uuid24",
+                  "item_text": "Reviewer of the company Chipotle says that working there is both fun and earns enough money.",
+                  "item_values": [
+                    "TRUE",
+                    "FALSE",
+                    "NOT GIVEN"
+                  ],
+                  "answer": "true"
+                },
+                {
+                  "item_number": 25,
+                  "item_uuid": "uuid25",
+                  "item_text": "Advantage Sales & Marketing owns 65 offices all over the world.",
+                  "item_values": [
+                    "TRUE",
+                    "FALSE",
+                    "NOT GIVEN"
+                  ],
+                  "answer": "false"
+                },
+                {
+                  "item_number": 26,
+                  "item_uuid": "uuid26",
+                  "item_text": "Universal Protection Service offers various security services in the USA.",
+                  "item_values": [
+                    "TRUE",
+                    "FALSE",
+                    "NOT GIVEN"
+                  ],
+                  "answer": "true"
+                },
+                {
+                  "item_number": 27,
+                  "item_uuid": "uuid27",
+                  "item_text": "Reviewer of the PSA Healthcare praises its high wages.",
+                  "item_values": [
+                    "TRUE",
+                    "FALSE",
+                    "NOT GIVEN"
+                  ],
+                  "answer": "not given"
+                },
+                {
+                  "item_number": 28,
+                  "item_uuid": "uuid28",
+                  "item_text": "None of the offers included an approximate salary in the description.",
+                  "item_values": [
+                    "TRUE",
+                    "FALSE",
+                    "NOT GIVEN"
+                  ],
+                  "answer": "true"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "section_id": "Section3 UUID",
+      "section_number": "3",
+      "section_description": "questions 29-40",
+      "contents": [
+        {
+          "content_id": "content_uuid3",
+          "content_text": "<p align=\"center\"><strong>What to do in a fire?</strong></p><p>Fire drills are a big part of being safe in school: They prepare you for what you need to do in case of a fire. But what if there was a fire where you live? <strong>Would you know what to do?</strong> Talking about fires can be scary because no one likes to think about people getting hurt or their things getting burned. But you can feel less worried if you are prepared.</p><p> It's a good idea for families to talk about what they would do to escape a fire. Different families will have different strategies. Some kids live in one-story houses and other kids live in tall buildings. You'll want to talk about escape plans and escape routes, so let's start there.</p><h3>Know Your Way Out</h3><p>An escape plan can help every member of a family get out of a burning house. The idea is to get outside <strong>quickly and safely</strong>. Smoke from a fire can make it hard to see where things are, so it's important to learn and remember the different ways out of your home. How many exits are there? How do you get to them from your room? It's a good idea to have your family draw a map of the escape plan. It's possible one way out could be blocked by fire or smoke, so you'll want to know where other ones are. And if you live in an apartment building, you'll want to know the best way to the stairwell or other emergency exits.</p><h3>Safety Steps</h3><p>If you're in a room with the door closed when the fire breaks out, you need to take a few extra steps:</p><ul type=\"disc\"><li>Check to see if there's heat or smoke coming in the cracks around the door. (You're checking to see if there's fire on the other side.)</li><li>If you see smoke coming under the door — <strong>don't open the door!</strong></li><li>If you don't see smoke — touch the door. If the door is hot or very warm — <strong>don't open the door!</strong></li><li>If you don't see smoke — and the door is not hot — then use your fingers to lightly touch the doorknob. <strong>If the doorknob is hot or very warm — don't open the door!</strong></li></ul><p>If the doorknob feels cool, and you can't see any smoke around the door, you can open the door very carefully and slowly. When you open the door, if you feel a burst of heat or smoke pours into the room, quickly shut the door and make sure it is really closed. If there's no smoke or heat when you open the door, <strong>go toward your escape route exit</strong><strong>.</strong>",
+          "questions": [
+            {
+              "question_text": "Choose NO MORE THAN THREE WORDS from the text for each answer",
+              "type": {
+                "id": "gap"
+              },
+              "items": [
+                {
+                  "item_number": 29,
+                  "item_uuid": "uuid29",
+                  "item_text": "While some might live in a tall buildings, others might live in a  __question",
+                  "answer": "one-story houses"
+                },
+                {
+                  "item_number": 30,
+                  "item_uuid": "uuid30",
+                  "item_text": "Important thing is to talk with your kids about escape __question",
+                  "answer": "plans, routes"
+                },
+                {
+                  "item_number": 31,
+                  "item_uuid": "uuid31",
+                  "item_text": "Making a __question is a good idea, it can help you escape",
+                  "answer": "map"
+                },
+                {
+                  "item_number": 32,
+                  "item_uuid": "uuid32",
+                  "item_text": "If you live in an apartment, you have to know the way to the staircase or other  __question",
+                  "answer": "Emergency exits"
+                },
+                {
+                  "item_number": 33,
+                  "item_uuid": "uuid33",
+                  "item_text": "You can only open the door if the __question is not hot and you can’t see smoke around the door.",
+                  "answer": "doorknob"
+                },
+                {
+                  "item_number": 34,
+                  "item_uuid": "uuid34",
+                  "item_text": "You should immediately close the door, if smoke __question into the room.",
+                  "answer": "pours"
+                }
+              ]
+            },
+            {
+              "question_text": "Do the following statements agree with the given information?",
+              "type": {
+                "id": "matching"
+              },
+              "items": [
+                {
+                  "item_number": 35,
+                  "item_uuid": "uuid35",
+                  "item_text": "It is important to have a strategy before escaping the fire.",
+                  "item_values": [
+                    "TRUE",
+                    "FALSE",
+                    "NOT GIVEN"
+                  ],
+                  "answer": "true"
+                },
+                {
+                  "item_number": 36,
+                  "item_uuid": "uuid36",
+                  "item_text": "You should mark different ways out of your home on the map.",
+                  "item_values": [
+                    "TRUE",
+                    "FALSE",
+                    "NOT GIVEN"
+                  ],
+                  "answer": "not given"
+                },
+                {
+                  "item_number": 37,
+                  "item_uuid": "uuid37",
+                  "item_text": "If you’re stuck in a room, and see smoke coming from the other room, you should open the door and ran to the exit.",
+                  "item_values": [
+                    "TRUE",
+                    "FALSE",
+                    "NOT GIVEN"
+                  ],
+                  "answer": "false"
+                },
+                {
+                  "item_number": 38,
+                  "item_uuid": "uuid38",
+                  "item_text": "Hot door means you shouldn’t open it to escape.",
+                  "item_values": [
+                    "TRUE",
+                    "FALSE",
+                    "NOT GIVEN"
+                  ],
+                  "answer": "true"
+                },
+                {
+                  "item_number": 39,
+                  "item_uuid": "uuid39",
+                  "item_text": "If you open the door and everything seems fine, go straight to the exit. Reviewer of the PSA Healthcare praises its high wages.",
+                  "item_values": [
+                    "TRUE",
+                    "FALSE",
+                    "NOT GIVEN"
+                  ],
+                  "answer": "true"
+                }
+              ]
+            },
+            {
+              "question_text": "Choose the correct answer",
+              "type": {
+                "id": "select"
+              },
+              "items": [
+                {
+                  "item_number": 40,
+                  "item_uuid": "uuid40",
+                  "item_text": "This article is mainly aimed at helping:",
+                  "item_values": {
+                    "A": "Children",
+                    "B": "Children and their parents",
+                    "C": "Only parents",
+                    "D": "Teachers at schools"
+                  },
+                  "answer": "B"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

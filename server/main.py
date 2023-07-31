@@ -14,7 +14,7 @@ import json
 import topics
 
 from ollogger import OL_logger, RequestLog
-from olfirestore import OLSaveHistory
+from olfirestore import OLSaveHistory,OL_firestore
 from olfilestorage import OLSaveAudio
 from const import *
 
@@ -144,6 +144,62 @@ async def WritingEstimationRoute():
     asyncio.create_task(OLSaveHistory(user, WritingType, tmp, request_uuid,test_type))
     return tmp
 
+@app.route("/ReadingEstimation", methods=["POST"])
+async def ReadingEstimationRoute():
+    body = request.get_json()
+    if body is None:
+        return {'failed': 'no json received'}
+    test_type = body['test_type']
+    test_id = body['test_id']
+    inputuser = request.get_json()['user']
+    answers = body['answers']
+    level = user.getUserLevel(inputuser)
+    question_definition = OL_firestore.collection(test_type+"_reading").document(test_id).get().to_dict()
+    errors = []
+    for question in question_definition['plain-answers']:
+        safe_answer = answers.get(question['item_uuid'], "")
+        if question['answer'] != safe_answer:
+            tmp_explain = ""
+            if level < 2:
+                tmp_explain = "Explanations are not available in your subscription plan"
+            else:
+                tmp_explain = question['item_explanation']
+            tmp = {
+                "id": question['item_number'],
+                "correct_answer": question['answer'],
+                "explanation": tmp_explain
+            }
+            errors.append(tmp)
+    number_errors = len(errors)
+    overall = ""
+    if number_errors == 0:
+        overall = "9.0"
+    elif (number_errors==1):
+        overall = "8.5"
+    elif ((number_errors>=2) and (number_errors <=3)):
+        overall = "8.0"
+    elif (number_errors == 4):
+        overall = "7.5"
+    elif (number_errors>=5 and number_errors <=6):
+        overall = "7.0"
+    elif (number_errors>=7 and number_errors <=8):
+        overall = "6.5"
+    elif (number_errors>=9 and number_errors <=10):
+        overall = "6.0"
+    elif (number_errors>=11 and number_errors <=13):
+        overall = "5.5"
+    elif (number_errors>=14 and number_errors <=17):
+        overall = "5.0"
+    elif (number_errors>=18 and number_errors <=21):
+        overall = "4.5"
+    elif (number_errors>=22 and number_errors <=25):
+        overall = "4.0"
+    else:
+        overall = "< 4.0"
+
+    tmp_res = {"id": test_id, "score": overall, "errors": errors, "level": level}
+
+    return tmp_res
 
 @app.route("/SpeakingEstimation", methods=["GET", "POST"])
 async def SpeakingEstimationRoute():

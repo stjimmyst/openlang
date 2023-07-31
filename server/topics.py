@@ -22,13 +22,21 @@ Write at least 150 words.
 
 SpeakingCollection = "speaking"
 WritingCollection = "writing"
+ReadingCollection = "reading"
 def getRandomTopic(task_type,test_type):
+    id_name = ""
+
     if (task_type==SpeakingType):
         collection=test_type+"_"+SpeakingCollection
         topic = defaultSpeakingTopic;
-    else:
+        id_name = "id"
+    elif (task_type==WritingType):
         collection=test_type+"_"+WritingCollection
         topic = defaultWritingTopic;
+        id_name = "id"
+    elif (task_type==ReadingType):
+        collection=test_type+"_"+ReadingCollection
+        id_name = "exam_number"
 
     number = 0
     doc = OL_firestore.collection(collection+"_count").document("count").get()
@@ -37,9 +45,13 @@ def getRandomTopic(task_type,test_type):
         OL_logger.warning("collection count = "+ str(number))
         random_topic = random.randint(0,number-1)
         print(random_topic)
-        topics = OL_firestore.collection(collection).where("id","==",random_topic).stream()
+        topics = OL_firestore.collection(collection).where(id_name,"==",random_topic).stream()
         for t in topics:
-
-            topic = t.get("topic")
-            print(topic)
-    return topic.replace("\\n", "\n");
+            if (task_type != ReadingType):
+                topic = t.get("topic").replace("\\n", "\n");
+            else:
+                id = t.get("exam_id")
+                print(id)
+                topic = OL_firestore.collection(collection).document(id).get().to_dict()
+                print(topic)
+        return topic
