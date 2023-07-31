@@ -16,6 +16,9 @@ async def OLSaveHistory(username,WritingSpeaking,dict_res,uuid,test_type):
     elif (WritingSpeaking == SpeakingType):
         OL_logger.info("Saving Writing history")
         col_name = test_type+"_speaking_history"
+    elif (WritingSpeaking == ReadingType):
+        OL_logger.info("Saving Reading history")
+        col_name = test_type+"_reading_history"
     else:
         OL_logger.error("OLSaveHistory. Wrong type "+ WritingSpeaking)
         return

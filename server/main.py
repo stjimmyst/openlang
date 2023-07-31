@@ -198,6 +198,9 @@ async def ReadingEstimationRoute():
         overall = "< 4.0"
 
     tmp_res = {"id": test_id, "score": overall, "errors": errors, "level": level}
+    history_res = tmp_res
+    history_res['answers'] = answers
+    asyncio.create_task(OLSaveHistory(user, ReadingType, history_res, str(uuid.uuid4()), test_type))
 
     return tmp_res
 
